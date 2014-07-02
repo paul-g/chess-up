@@ -7,7 +7,13 @@ class CApp {
 
 private:
   bool running;
-  SDL_Surface* surface;
+
+  // surfaces for up and down images
+  SDL_Surface* upSurface;
+  SDL_Surface* downSurface;
+
+  SDL_Window *win;   // the game window
+  SDL_Surface* surface; // surface for the whole game
 
 public:
 
@@ -17,7 +23,7 @@ public:
 
   bool OnInit();
 
-  void OnEvent(SDL_Event* Event);
+  void OnEvent(SDL_Event&);
 
   void OnLoop();
 

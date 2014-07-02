@@ -16,14 +16,10 @@ int CApp::OnExecute() {
 
   while (running) {
     while (SDL_PollEvent(&event)) {
-      OnEvent(&event);
+      OnEvent(event);
     }
     OnLoop();
     OnRender();
-
-    // TODO: remove delay, rune multiple times :D
-    SDL_Delay(2000);
-    running = false;
   }
 
   OnCleanup();
@@ -38,7 +34,7 @@ bool CApp::OnInit() {
     return false;
   }
 
-  SDL_Window *win = SDL_CreateWindow("Hello World!",
+  win = SDL_CreateWindow("Hello World!",
                                      100, 100, 640, 480,
                                      SDL_WINDOW_SHOWN);
   if (win == nullptr){
@@ -48,32 +44,45 @@ bool CApp::OnInit() {
   }
 
   surface = SDL_GetWindowSurface(win);
-  SDL_FillRect(surface, NULL,
-               SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
-  SDL_UpdateWindowSurface(win);
-  SDL_Delay(2000);
-
-  SDL_Surface* loadScreen = SDL_LoadBMP("hello_world.bmp");
-  if (loadScreen == nullptr) {
+  downSurface = SDL_LoadBMP("hello_world.bmp");
+  upSurface = SDL_LoadBMP("x.bmp");
+  if (downSurface == nullptr || upSurface == nullptr) {
     std::cout << "Unable to load image for load screen" << std::endl;
     return false;
   }
 
-  SDL_BlitSurface(loadScreen, NULL, surface, NULL);
+  SDL_BlitSurface(downSurface, NULL, surface, NULL);
   SDL_UpdateWindowSurface(win);
 
   return true;
 }
 
-void CApp::OnEvent(SDL_Event* Event) {}
+void CApp::OnEvent(SDL_Event& e) {
+
+  if (e.type == SDL_QUIT) {
+    running = false;
+  } else if (e.type == SDL_KEYDOWN) {
+    switch (e.key.keysym.sym) {
+    case SDLK_UP:
+      SDL_BlitSurface(upSurface, NULL, surface, NULL);
+      break;
+    case SDLK_DOWN:
+      SDL_BlitSurface(downSurface, NULL, surface, NULL);
+      break;
+    default:
+      std::cout << "Key Not Supported!" << std::endl;
+    }
+    SDL_UpdateWindowSurface(win);
+  }
+}
 
 void CApp::OnLoop() {}
 
 void CApp::OnRender() {}
 
 void CApp::OnCleanup() {
-    SDL_FreeSurface(surface);
-    SDL_Quit();
+  SDL_FreeSurface(surface);
+  SDL_Quit();
 }
 
 int main(int argc, char* argv[]) {

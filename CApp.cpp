@@ -1,6 +1,5 @@
 #include "CApp.hpp"
 
-
 #include <iostream>
 
 CApp::CApp() {
@@ -21,6 +20,10 @@ int CApp::OnExecute() {
     }
     OnLoop();
     OnRender();
+
+    // TODO: remove delay, rune multiple times :D
+    SDL_Delay(2000);
+    running = false;
   }
 
   OnCleanup();
@@ -30,15 +33,27 @@ int CApp::OnExecute() {
 
 
 bool CApp::OnInit() {
-  if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
+  if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+    std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
     return false;
+  }
 
-  // TODO: this seems outdated in SDL 2.0
-  // surface =  SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-  // if(!surface)
-  //   return false;
+  SDL_Window *win = SDL_CreateWindow("Hello World!",
+                                     100, 100, 640, 480,
+                                     SDL_WINDOW_SHOWN);
+  if (win == nullptr){
+    std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+    SDL_Quit();
+    return false;
+  }
 
-  return true;}
+  surface = SDL_GetWindowSurface(win);
+  SDL_FillRect(surface, NULL,
+               SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
+  SDL_UpdateWindowSurface(win);
+
+  return true;
+}
 
 void CApp::OnEvent(SDL_Event* Event) {}
 
@@ -49,20 +64,6 @@ void CApp::OnRender() {}
 void CApp::OnCleanup() {}
 
 int main(int argc, char* argv[]) {
-
-  if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
-    std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
-    return 1;
-  }
-
-  SDL_Window *win = SDL_CreateWindow("Hello World!",
-				     100, 100, 640, 480,
-				     SDL_WINDOW_SHOWN);
-  if (win == nullptr){
-    std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
-    SDL_Quit();
-    return 1;
-  }
-
-  return 0;
+  CApp capp;
+  return capp.OnExecute();
 }

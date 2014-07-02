@@ -51,6 +51,16 @@ bool CApp::OnInit() {
   SDL_FillRect(surface, NULL,
                SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
   SDL_UpdateWindowSurface(win);
+  SDL_Delay(2000);
+
+  SDL_Surface* loadScreen = SDL_LoadBMP("hello_world.bmp");
+  if (loadScreen == nullptr) {
+    std::cout << "Unable to load image for load screen" << std::endl;
+    return false;
+  }
+
+  SDL_BlitSurface(loadScreen, NULL, surface, NULL);
+  SDL_UpdateWindowSurface(win);
 
   return true;
 }
@@ -61,7 +71,10 @@ void CApp::OnLoop() {}
 
 void CApp::OnRender() {}
 
-void CApp::OnCleanup() {}
+void CApp::OnCleanup() {
+    SDL_FreeSurface(surface);
+    SDL_Quit();
+}
 
 int main(int argc, char* argv[]) {
   CApp capp;

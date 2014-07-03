@@ -64,7 +64,14 @@ void CApp::OnEvent(SDL_Event& e) {
   } else if (e.type == SDL_KEYDOWN) {
     switch (e.key.keysym.sym) {
     case SDLK_UP:
+      SDL_Rect rect;
+      rect.x = 0;
+      rect.y = 0;
+      rect.w = 100;
+      rect.h = 100;
       SDL_BlitSurface(upSurface, NULL, surface, NULL);
+      SDL_FillRect(surface, &rect,
+		   SDL_MapRGB(surface->format, 0, 0, 0));
       break;
     case SDLK_DOWN:
       SDL_BlitSurface(downSurface, NULL, surface, NULL);

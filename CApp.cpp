@@ -35,7 +35,7 @@ bool CApp::OnInit() {
   }
 
   win = SDL_CreateWindow("Hello World!",
-                                     100, 100, 640, 480,
+                                     100, 100, 640, 640,
                                      SDL_WINDOW_SHOWN);
   if (win == nullptr){
     std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
@@ -44,42 +44,16 @@ bool CApp::OnInit() {
   }
 
   surface = SDL_GetWindowSurface(win);
-  downSurface = SDL_LoadBMP("hello_world.bmp");
-  upSurface = SDL_LoadBMP("x.bmp");
-  if (downSurface == nullptr || upSurface == nullptr) {
-    std::cout << "Unable to load image for load screen" << std::endl;
-    return false;
-  }
-
-  SDL_BlitSurface(downSurface, NULL, surface, NULL);
+  SDL_FillRect(surface, NULL,
+	       SDL_MapRGB(surface->format, 0, 0, 0));
+  board.draw(surface);
   SDL_UpdateWindowSurface(win);
-
   return true;
 }
 
 void CApp::OnEvent(SDL_Event& e) {
-
   if (e.type == SDL_QUIT) {
     running = false;
-  } else if (e.type == SDL_KEYDOWN) {
-    switch (e.key.keysym.sym) {
-    case SDLK_UP:
-      SDL_Rect rect;
-      rect.x = 0;
-      rect.y = 0;
-      rect.w = 100;
-      rect.h = 100;
-      SDL_BlitSurface(upSurface, NULL, surface, NULL);
-      SDL_FillRect(surface, &rect,
-		   SDL_MapRGB(surface->format, 0, 0, 0));
-      break;
-    case SDLK_DOWN:
-      SDL_BlitSurface(downSurface, NULL, surface, NULL);
-      break;
-    default:
-      std::cout << "Key Not Supported!" << std::endl;
-    }
-    SDL_UpdateWindowSurface(win);
   }
 }
 

@@ -2,11 +2,13 @@
 #define _CAPP_H_
 
 #include <SDL2/SDL.h>
+#include "Board.hpp"
 
 class CApp {
 
 private:
   bool running;
+  Board board;
 
   // surfaces for up and down images
   SDL_Surface* upSurface;

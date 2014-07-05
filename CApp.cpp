@@ -45,7 +45,7 @@ bool CApp::OnInit() {
 
   surface = SDL_GetWindowSurface(win);
   SDL_FillRect(surface, NULL,
-	       SDL_MapRGB(surface->format, 0, 0, 0));
+	       SDL_MapRGB(surface->format, 150, 150, 150));
   board.draw(surface);
   SDL_UpdateWindowSurface(win);
   return true;

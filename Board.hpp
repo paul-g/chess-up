@@ -29,7 +29,7 @@ public:
         rect.w = 80;
         rect.h = 80;
         SDL_FillRect(surface, &rect,
-                     SDL_MapRGB(surface->format, 255, 255, 255));
+                     SDL_MapRGB(surface->format, 210, 210, 210));
       }
     }
 

@@ -7,6 +7,9 @@ class Board {
 public:
   Board() {
     bPawnS = SDL_LoadBMP("black_pawn.bmp");
+    SDL_SetColorKey(bPawnS,
+		    SDL_TRUE,
+		    SDL_MapRGB(bPawnS->format, 0, 255, 0) );
   }
 
   ~Board() {

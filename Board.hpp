@@ -5,7 +5,13 @@
 
 class Board {
 public:
-  Board() {}
+  Board() {
+    bPawnS = SDL_LoadBMP("black_pawn.bmp");
+  }
+
+  ~Board() {
+    // TODO free pawn surface
+  }
 
   bool draw(SDL_Surface* surface) {
     for (int j = 0; j <= 640; j+= 80) {
@@ -21,9 +27,23 @@ public:
       }
     }
 
+    drawPawn(surface);
+
     return true;
   }
 
+private:
+
+  void drawPawn(SDL_Surface* surface) {
+    SDL_Rect rect;
+    rect.x = 80;
+    rect.y = 80;
+    rect.w = 80;
+    rect.h = 80;
+    SDL_BlitSurface(bPawnS, NULL, surface, &rect);
+  }
+
+  SDL_Surface* bPawnS;
 };
 
 

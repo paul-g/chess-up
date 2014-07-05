@@ -2,14 +2,17 @@
 #define _BOARD_H_
 
 #include <SDL2/SDL.h>
+#include <string>
+#include <iostream>
+
+
+using namespace std;
 
 class Board {
 public:
   Board() {
-    bPawnS = SDL_LoadBMP("black_pawn.bmp");
-    SDL_SetColorKey(bPawnS,
-		    SDL_TRUE,
-		    SDL_MapRGB(bPawnS->format, 0, 255, 0) );
+    bPawnS = loadPiece("white_pawn.bmp");
+    wPawnS = loadPiece("black_pawn.bmp");
   }
 
   ~Board() {
@@ -30,23 +33,47 @@ public:
       }
     }
 
-    drawPawn(surface);
+    for (int i = 0; i < 8; i++) {
+      drawPiece(surface, i, 1, bPawnS);
+      drawPiece(surface, i, 6, wPawnS);
+    }
 
     return true;
   }
 
 private:
 
-  void drawPawn(SDL_Surface* surface) {
+  void drawPiece(SDL_Surface* surface, int bx, int by, SDL_Surface* piece) {
     SDL_Rect rect;
-    rect.x = 80;
-    rect.y = 80;
+    rect.x = toDispX(bx);
+    rect.y = toDispY(by);
     rect.w = 80;
     rect.h = 80;
-    SDL_BlitSurface(bPawnS, NULL, surface, &rect);
+    SDL_BlitSurface(piece, NULL, surface, &rect);
+  }
+
+  void setTransparent(SDL_Surface* surface) {
+    SDL_SetColorKey(surface,
+		    SDL_TRUE,
+		    SDL_MapRGB(surface->format, 0, 255, 0) );
+  }
+
+  SDL_Surface* loadPiece(std::string path) {
+    SDL_Surface* s = SDL_LoadBMP(path.c_str());
+    setTransparent(s);
+    return s;
+  }
+
+  int toDispX(int bx) {
+    return 80 * bx;
+  }
+
+  int toDispY(int by) {
+    return 80 * by;
   }
 
   SDL_Surface* bPawnS;
+  SDL_Surface* wPawnS;
 };
 
 

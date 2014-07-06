@@ -28,6 +28,9 @@ public:
   }
 
   bool draw(SDL_Surface* surface) {
+    SDL_FillRect(surface, NULL,
+		 SDL_MapRGB(surface->format, 125, 125, 125));
+
     for (int j = 0; j <= 640; j+= 80) {
       int start = (j / 80) % 2 == 0 ? 0 : 80;
       for (int i = start; i <= 640; i+= 160) {
@@ -73,13 +76,28 @@ public:
     int tx = toBoardX(toX);
     int ty = toBoardY(toY);
 
-    std::cout << "Moving piece from " << fx << " " << fy;
-    std::cout << " to " << tx << " " << ty << std::endl;
+    if (!validateMove(fx, fy, tx, ty))
+      return;
 
-    // TODO move the piece
+    board[tx][ty] = board[fx][fy];
+    board[fx][fy] = EMPTY;
+    color[tx][ty] = color[fx][fy];
+    color[fx][fy] = EMPTY;
   }
 
 private:
+
+  void printMove(int fx, int fy, int tx, int ty) {
+    std::cout << "Moving piece from " << fx << " " << fy;
+    std::cout << " to " << tx << " " << ty << std::endl;
+    std::cout << board[fx][fy] << std::endl;
+    std::cout << color[fx][fy] << std::endl;
+  }
+
+  bool validateMove(int fx, int fy, int tx, int ty) {
+    // TODO add proper validation
+    return fy != ty || fx != tx;
+  }
 
   void drawPiece(SDL_Surface* surface, int bx, int by, SDL_Surface* piece) {
     SDL_Rect rect;

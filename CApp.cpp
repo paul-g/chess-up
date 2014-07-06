@@ -80,12 +80,14 @@ void CApp::OnEvent(SDL_Event& e) {
       }
     }
   }
-
 }
 
 void CApp::OnLoop() {}
 
-void CApp::OnRender() {}
+void CApp::OnRender() {
+  board.draw(surface);
+  SDL_UpdateWindowSurface(win);
+}
 
 void CApp::OnCleanup() {
   SDL_FreeSurface(surface);

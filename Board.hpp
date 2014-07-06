@@ -4,14 +4,13 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <iostream>
+#include "Piece.hpp"
+#include "Pawn.hpp"
 
 
 // TODO make pieces an enum
 const int EMPTY = 0;
 const int PAWN = 1;
-
-const int WHITE = 1;
-const int BLACK = 2;
 
 const int INVALID = 0;
 const int SOURCE = 1;
@@ -66,18 +65,9 @@ public:
 
     for (int i = 0; i < 8; i++)
       for (int j = 0; j < 8; j++) {
-	switch (board[i][j]) {
-	  case PAWN:
-	    if (color[i][j] == BLACK)
-	      drawPiece(surface, i, j, bPawnS);
-	    else
-	      drawPiece(surface, i, j, wPawnS);
-	    break;
-	case EMPTY:
-	  break;
-	default:
-	    std::cout << "Unkown piece type!" << std::endl;
-	  }
+	if (board[i][j] != nullptr) {
+	  board[i][j]->draw(surface, i, j);
+	}
       }
 
     return true;
@@ -108,9 +98,7 @@ public:
       return;
 
     board[tx][ty] = board[fx][fy];
-    board[fx][fy] = EMPTY;
-    color[tx][ty] = color[fx][fy];
-    color[fx][fy] = EMPTY;
+    board[fx][fy] = nullptr;
 
     clearValid();
   }
@@ -133,14 +121,13 @@ private:
   }
 
   bool validateSelection(int bx, int by) {
-    return board[bx][by] != EMPTY;
+    return board[bx][by] != nullptr;
   }
 
   void printMove(int fx, int fy, int tx, int ty) {
     std::cout << "Moving piece from " << fx << " " << fy;
     std::cout << " to " << tx << " " << ty << std::endl;
     std::cout << board[fx][fy] << std::endl;
-    std::cout << color[fx][fy] << std::endl;
   }
 
   bool validateMove(int fx, int fy, int tx, int ty) {
@@ -186,20 +173,17 @@ private:
   }
 
   void initBoard() {
-
+    std::cout << "Init board" << std::endl;
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
-	color[i][j] = EMPTY;
-	board[i][j] = EMPTY;
+	board[i][j] = nullptr;
 	valid[i][j] = INVALID;
       }
     }
 
     for (int i = 0; i < 8; i++) {
-      board[i][1] = PAWN;
-      color[i][1] = WHITE;
-      board[i][6] = PAWN;
-      color[i][6] = BLACK;
+      board[i][1] = new Pawn(WHITE);
+      board[i][6] = new Pawn(BLACK);
     }
   }
 
@@ -207,8 +191,7 @@ private:
   SDL_Surface* wPawnS;
 
   // board model
-  int board[8][8];
-  int color[8][8];
+  Piece* board[8][8];
 
   // a list of valid moves for the current selection
   bool valid[8][8];

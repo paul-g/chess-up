@@ -21,54 +21,97 @@ using namespace std;
 class Board {
 public:
   Board() {
+    init = true;
     initBoard();
-    wPawnS = loadPiece("white_pawn.bmp");
-    bPawnS = loadPiece("black_pawn.bmp");
   }
 
   ~Board() {
-    // TODO free pawn surface
+    std::cout << "Board::~Board" << std::endl;
+    for (int i = 0; i < 8; i++)
+      for (int j = 0; j < 8; j++)
+        if (board[i][j] != nullptr)
+          delete board[i][j];
   }
 
   bool draw(SDL_Surface* surface) {
-    SDL_FillRect(surface, NULL,
-		 SDL_MapRGB(surface->format, 125, 125, 125));
+    bool updated = false;
+    int updateCount = 0;
 
-    for (int j = 0; j <= 640; j+= 80) {
-      int start = (j / 80) % 2 == 0 ? 0 : 80;
-      for (int i = start; i <= 640; i+= 160) {
-        SDL_Rect rect;
-        rect.x = i;
-        rect.y = j;
-        rect.w = 80;
-        rect.h = 80;
-        SDL_FillRect(surface, &rect,
-                     SDL_MapRGB(surface->format, 210, 210, 210));
-      }
+    if (init) {
+      for (int i = 0; i < 8; i++)
+        for (int j = 0; j < 8; j++) {
+          SDL_Rect rect;
+          rect.x = toDispX(i);
+          rect.y = toDispY(j);
+          rect.w = 80;
+          rect.h = 80;
+          if ((i + j) % 2 == 0)
+            SDL_FillRect(surface, &rect,
+                         SDL_MapRGB(surface->format, 210, 210, 210));
+          else
+            SDL_FillRect(surface, &rect,
+                         SDL_MapRGB(surface->format, 125, 125, 125));
+        }
+      init = false;
+      return true;
     }
 
     for (int i = 0; i < 8; i++)
-      for (int j = 0; j < 8; j++)
-	if (valid[i][j] != INVALID) {
-	  SDL_Rect rect;
-	  rect.x = toDispX(i);
-	  rect.y = toDispY(j);
-	  rect.w = 80;
-	  rect.h = 80;
-	  if (valid[i][j] == SOURCE)
-	    SDL_FillRect(surface, &rect,
-			 SDL_MapRGB(surface->format, 255, 255, 0));
-	  else if (valid[i][j] == VALID)
-	    SDL_FillRect(surface, &rect,
-			 SDL_MapRGB(surface->format, 0, 255, 0));
-	}
+      for (int j = 0; j < 8; j++) {
+
+        if (!changed[i][j])
+          continue;
+        updated = true;
+        updateCount++;
+
+
+        SDL_Rect rect;
+        rect.x = toDispX(i);
+        rect.y = toDispY(j);
+        rect.w = 80;
+        rect.h = 80;
+
+        if (valid[i][j] != INVALID) {
+          if (valid[i][j] == SOURCE)
+            SDL_FillRect(surface, &rect,
+                         SDL_MapRGB(surface->format, 255, 255, 0));
+
+          if (valid[i][j] == VALID) {
+            SDL_FillRect(surface, &rect,
+                         SDL_MapRGB(surface->format, 0, 255, 0));
+	  }
+
+	  if (board[i][j] != nullptr)
+	    board[i][j]->draw(surface, i, j);
+
+	  continue;
+        }
+
+	if (board[i][j] != nullptr) {
+          board[i][j]->draw(surface, i, j);
+          continue;
+        }
+
+        if ((i + j) % 2 == 0)
+          SDL_FillRect(surface, &rect,
+                       SDL_MapRGB(surface->format, 210, 210, 210));
+        else
+          SDL_FillRect(surface, &rect,
+                       SDL_MapRGB(surface->format, 125, 125, 125));
+      }
 
     for (int i = 0; i < 8; i++)
-      for (int j = 0; j < 8; j++) {
-	if (board[i][j] != nullptr) {
-	  board[i][j]->draw(surface, i, j);
-	}
-      }
+      for (int j = 0; j < 8; j++)
+        changed[i][j] = false;
+
+    if (updated)
+      std::cout << "Updated cells " << updateCount << std::endl;
+
+    init = false;
+    return true;
+  }
+
+  bool update(SDL_Surface* surface) {
 
     return true;
   }
@@ -101,23 +144,30 @@ public:
     board[fx][fy] = nullptr;
 
     clearValid();
+
+    changed[tx][ty] = true;
+    changed[fx][fy] = true;
   }
 
 private:
 
   void clearValid() {
     for (int i = 0; i < 8; i++)
-      for (int j = 0; j < 8; j++)
-	valid[i][j] = INVALID;
+      for (int j = 0; j < 8; j++) {
+        if (valid[i][j] != INVALID)
+          changed[i][j] = true;
+        valid[i][j] = INVALID;
+      }
   }
 
   void updateValid(int bx, int by) {
     for (int i = 0; i < 8; i++)
       for (int j = 0; j < 8; j++)
-	valid[bx][by] = INVALID;
+        valid[bx][by] = INVALID;
 
     // TODO mark valid movement squares
     valid[bx][by] = SOURCE;
+    changed[bx][by] = true;
   }
 
   bool validateSelection(int bx, int by) {
@@ -146,8 +196,8 @@ private:
 
   void setTransparent(SDL_Surface* surface) {
     SDL_SetColorKey(surface,
-		    SDL_TRUE,
-		    SDL_MapRGB(surface->format, 0, 255, 0) );
+                    SDL_TRUE,
+                    SDL_MapRGB(surface->format, 0, 255, 0) );
   }
 
   SDL_Surface* loadPiece(std::string path) {
@@ -176,8 +226,9 @@ private:
     std::cout << "Init board" << std::endl;
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
-	board[i][j] = nullptr;
-	valid[i][j] = INVALID;
+        board[i][j] = nullptr;
+        valid[i][j] = INVALID;
+        changed[i][j] = true;
       }
     }
 
@@ -187,14 +238,14 @@ private:
     }
   }
 
-  SDL_Surface* bPawnS;
-  SDL_Surface* wPawnS;
-
   // board model
   Piece* board[8][8];
+  bool changed[8][8];
 
   // a list of valid moves for the current selection
   bool valid[8][8];
+
+  bool init;
 };
 
 

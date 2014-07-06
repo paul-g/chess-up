@@ -11,6 +11,10 @@ public:
     firstMove = true;
   }
 
+  ~Pawn() {
+    SDL_FreeSurface(surface);
+  }
+
 private:
   bool firstMove;
 };

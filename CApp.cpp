@@ -4,6 +4,8 @@
 
 CApp::CApp() {
   running = true;
+  selected = false;
+  toX = toY = fromX = fromY = 0;
 }
 
 int CApp::OnExecute() {
@@ -29,6 +31,7 @@ int CApp::OnExecute() {
 
 
 bool CApp::OnInit() {
+
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
     return false;
@@ -52,9 +55,32 @@ bool CApp::OnInit() {
 }
 
 void CApp::OnEvent(SDL_Event& e) {
+
+  // handle quit event
   if (e.type == SDL_QUIT) {
     running = false;
+    return;
   }
+
+  // handle mouse events
+
+  if (e.type == SDL_MOUSEBUTTONDOWN) {
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    if (selected) {
+      toX = x;
+      toY = y;
+      selected = false;
+      board.movePiece(fromX, fromY, toX, toY);
+    } else {
+      if (board.squareHasPiece(x, y)) {
+	fromX = x;
+	fromY = y;
+	selected = true;
+      }
+    }
+  }
+
 }
 
 void CApp::OnLoop() {}

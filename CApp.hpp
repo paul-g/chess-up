@@ -8,7 +8,11 @@ class CApp {
 
 private:
   bool running;
+  bool selected; // selected a piece to move from
   Board board;
+
+  // to and from piece locations (in display coordinates)
+  int fromX, fromY, toX, toY;
 
   // surfaces for up and down images
   SDL_Surface* upSurface;

@@ -41,6 +41,24 @@ public:
     return true;
   }
 
+  bool squareHasPiece(int dX, int dY) {
+    // TODO check if we have piece
+    return true;
+  }
+
+  // move piece from -> to coordinates (display coordinates)
+  void movePiece(int fromX, int fromY, int  toX, int toY) {
+    int fx = toBoardX(fromX);
+    int fy = toBoardY(fromY);
+    int tx = toBoardX(toX);
+    int ty = toBoardY(toY);
+
+    std::cout << "Moving piece from " << fx << " " << fy;
+    std::cout << " to " << tx << " " << ty << std::endl;
+
+    // TODO move the piece
+  }
+
 private:
 
   void drawPiece(SDL_Surface* surface, int bx, int by, SDL_Surface* piece) {
@@ -70,6 +88,14 @@ private:
 
   int toDispY(int by) {
     return 80 * by;
+  }
+
+  int toBoardX(int dx) {
+    return dx / 80;
+  }
+
+  int toBoardY(int dy) {
+    return dy / 80;
   }
 
   SDL_Surface* bPawnS;

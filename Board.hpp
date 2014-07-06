@@ -60,9 +60,10 @@ public:
     return true;
   }
 
-  bool squareHasPiece(int dX, int dY) {
-    // TODO check if we have piece
-    return true;
+  bool squareHasPiece(int dx, int dy) {
+    int bx = toBoardX(dx);
+    int by = toBoardY(dy);
+    return board[bx][by] != EMPTY;
   }
 
   // move piece from -> to coordinates (display coordinates)

@@ -6,11 +6,19 @@
 #include <iostream>
 
 
+// TODO make pieces an enum
+const int EMPTY = 0;
+const int PAWN = 1;
+
+const int WHITE = 1;
+const int BLACK = 2;
+
 using namespace std;
 
 class Board {
 public:
   Board() {
+    initBoard();
     bPawnS = loadPiece("white_pawn.bmp");
     wPawnS = loadPiece("black_pawn.bmp");
   }
@@ -33,10 +41,21 @@ public:
       }
     }
 
-    for (int i = 0; i < 8; i++) {
-      drawPiece(surface, i, 1, bPawnS);
-      drawPiece(surface, i, 6, wPawnS);
-    }
+    for (int i = 0; i < 8; i++)
+      for (int j = 0; j < 8; j++) {
+	switch (board[i][j]) {
+	  case PAWN:
+	    if (color[i][j] == BLACK)
+	      drawPiece(surface, i, j, bPawnS);
+	    else
+	      drawPiece(surface, i, j, wPawnS);
+	    break;
+	case EMPTY:
+	  break;
+	default:
+	    std::cout << "Unkown piece type!" << std::endl;
+	  }
+      }
 
     return true;
   }
@@ -98,8 +117,29 @@ private:
     return dy / 80;
   }
 
+  void initBoard() {
+
+    for (int i = 0; i < 8; i++) {
+      for (int j = 0; j < 8; j++) {
+	color[i][j] = EMPTY;
+	board[i][j] = EMPTY;
+      }
+    }
+
+    for (int i = 0; i < 8; i++) {
+      board[i][1] = PAWN;
+      color[i][1] = WHITE;
+      board[i][6] = PAWN;
+      color[i][6] = BLACK;
+    }
+  }
+
   SDL_Surface* bPawnS;
   SDL_Surface* wPawnS;
+
+  // board model
+  int board[8][8];
+  int color[8][8];
 };
 
 

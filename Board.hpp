@@ -19,8 +19,8 @@ class Board {
 public:
   Board() {
     initBoard();
-    bPawnS = loadPiece("white_pawn.bmp");
-    wPawnS = loadPiece("black_pawn.bmp");
+    wPawnS = loadPiece("white_pawn.bmp");
+    bPawnS = loadPiece("black_pawn.bmp");
   }
 
   ~Board() {

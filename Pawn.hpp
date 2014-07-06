@@ -7,18 +7,12 @@
 class Pawn : public Piece {
 
 public:
-  Pawn(int color) {
-    if (color == WHITE)
-      surface = loadPiece("white_pawn.bmp");
-    else
-      surface = loadPiece("black_pawn.bmp");
+  Pawn(int color) : Piece(color, "black_pawn.bmp", "white_pawn.bmp") {
     firstMove = true;
   }
 
 private:
-  SDL_Surface* surface;
   bool firstMove;
-
 };
 
 

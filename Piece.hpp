@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <string>
+#include <iostream>
 
 const int WHITE = 0;
 const int BLACK = 1;
@@ -10,12 +11,32 @@ const int BLACK = 1;
 class Piece {
 
 public:
-  Piece() {}
+
+  Piece(int color, std::string blackImg, std::string whiteImg) {
+    this->surface = color == BLACK ? loadPiece(blackImg) : loadPiece(whiteImg);
+  }
+
   virtual ~Piece() {}
 
-  virtual void draw() = 0;
+  void draw(SDL_Surface* srcsurf, int bx, int by) {
+    SDL_Rect rect;
+    rect.x = toDispX(bx);
+    rect.y = toDispY(by);
+    rect.w = 80;
+    rect.h = 80;
+    SDL_BlitSurface(this->surface, NULL, srcsurf, &rect);
+  }
+
 
 protected:
+  int toDispX(int bx) {
+    return 80 * bx;
+  }
+
+  int toDispY(int by) {
+    return 80 * by;
+  }
+
   void setTransparent(SDL_Surface* surface) {
     SDL_SetColorKey(surface,
 		    SDL_TRUE,
@@ -28,6 +49,7 @@ protected:
     return s;
   }
 
+  SDL_Surface* surface;
 };
 
 

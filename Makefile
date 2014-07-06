@@ -8,7 +8,7 @@ main: CApp.o Board.o Pawn.o
 	$(CXX) -o main $(SDL_INC) $^ $(SDL_LINK)
 
 clean:
-	rm main *.o
+	rm -f main *.o *.gch
 
 run: main
 	./main

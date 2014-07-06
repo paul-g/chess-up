@@ -73,7 +73,7 @@ void CApp::OnEvent(SDL_Event& e) {
       selected = false;
       board.movePiece(fromX, fromY, toX, toY);
     } else {
-      if (board.squareHasPiece(x, y)) {
+      if (board.select(x, y)) {
 	fromX = x;
 	fromY = y;
 	selected = true;

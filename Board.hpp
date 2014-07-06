@@ -13,6 +13,10 @@ const int PAWN = 1;
 const int WHITE = 1;
 const int BLACK = 2;
 
+const int INVALID = 0;
+const int SOURCE = 1;
+const int VALID = 2;
+
 using namespace std;
 
 class Board {
@@ -45,6 +49,22 @@ public:
     }
 
     for (int i = 0; i < 8; i++)
+      for (int j = 0; j < 8; j++)
+	if (valid[i][j] != INVALID) {
+	  SDL_Rect rect;
+	  rect.x = toDispX(i);
+	  rect.y = toDispY(j);
+	  rect.w = 80;
+	  rect.h = 80;
+	  if (valid[i][j] == SOURCE)
+	    SDL_FillRect(surface, &rect,
+			 SDL_MapRGB(surface->format, 255, 255, 0));
+	  else if (valid[i][j] == VALID)
+	    SDL_FillRect(surface, &rect,
+			 SDL_MapRGB(surface->format, 0, 255, 0));
+	}
+
+    for (int i = 0; i < 8; i++)
       for (int j = 0; j < 8; j++) {
 	switch (board[i][j]) {
 	  case PAWN:
@@ -63,10 +83,18 @@ public:
     return true;
   }
 
-  bool squareHasPiece(int dx, int dy) {
+  // Returns true iff the select square is the source of a valid move
+  bool select(int dx, int dy) {
     int bx = toBoardX(dx);
     int by = toBoardY(dy);
-    return board[bx][by] != EMPTY;
+
+    if (!validateSelection(bx, by)) {
+      return false;
+    }
+
+    updateValid(bx, by);
+
+    return true;
   }
 
   // move piece from -> to coordinates (display coordinates)
@@ -83,9 +111,30 @@ public:
     board[fx][fy] = EMPTY;
     color[tx][ty] = color[fx][fy];
     color[fx][fy] = EMPTY;
+
+    clearValid();
   }
 
 private:
+
+  void clearValid() {
+    for (int i = 0; i < 8; i++)
+      for (int j = 0; j < 8; j++)
+	valid[i][j] = INVALID;
+  }
+
+  void updateValid(int bx, int by) {
+    for (int i = 0; i < 8; i++)
+      for (int j = 0; j < 8; j++)
+	valid[bx][by] = INVALID;
+
+    // TODO mark valid movement squares
+    valid[bx][by] = SOURCE;
+  }
+
+  bool validateSelection(int bx, int by) {
+    return board[bx][by] != EMPTY;
+  }
 
   void printMove(int fx, int fy, int tx, int ty) {
     std::cout << "Moving piece from " << fx << " " << fy;
@@ -142,6 +191,7 @@ private:
       for (int j = 0; j < 8; j++) {
 	color[i][j] = EMPTY;
 	board[i][j] = EMPTY;
+	valid[i][j] = INVALID;
       }
     }
 
@@ -159,6 +209,9 @@ private:
   // board model
   int board[8][8];
   int color[8][8];
+
+  // a list of valid moves for the current selection
+  bool valid[8][8];
 };
 
 

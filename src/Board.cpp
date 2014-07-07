@@ -96,8 +96,10 @@ void Board::movePiece(int fromX, int fromY, int  toX, int toY) {
   if (!validateMove(fx, fy, tx, ty))
     return;
 
-  board[tx][ty] = board[fx][fy];
+  Piece *p = board[fx][fy];
+  board[tx][ty] = p;
   board[fx][fy] = nullptr;
+  p->move(tx, ty);
 
   clearValid();
 }

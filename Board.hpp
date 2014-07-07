@@ -79,15 +79,23 @@ public:
           if (valid[i][j] == VALID) {
             SDL_FillRect(surface, &rect,
                          SDL_MapRGB(surface->format, 0, 255, 0));
-	  }
+          }
 
-	  if (board[i][j] != nullptr)
-	    board[i][j]->draw(surface, i, j);
+          if (board[i][j] != nullptr)
+            board[i][j]->draw(surface, i, j);
 
-	  continue;
+          continue;
         }
 
-	if (board[i][j] != nullptr) {
+        if (board[i][j] != nullptr) {
+          // reset square and draw piece
+          if ((i + j) % 2 == 0)
+            SDL_FillRect(surface, &rect,
+                         SDL_MapRGB(surface->format, 210, 210, 210));
+          else
+            SDL_FillRect(surface, &rect,
+                         SDL_MapRGB(surface->format, 125, 125, 125));
+
           board[i][j]->draw(surface, i, j);
           continue;
         }

@@ -144,9 +144,6 @@ public:
     board[fx][fy] = nullptr;
 
     clearValid();
-
-    changed[tx][ty] = true;
-    changed[fx][fy] = true;
   }
 
 private:
@@ -165,9 +162,20 @@ private:
       for (int j = 0; j < 8; j++)
         valid[bx][by] = INVALID;
 
-    // TODO mark valid movement squares
     valid[bx][by] = SOURCE;
     changed[bx][by] = true;
+
+    // TODO mark valid movement squares
+    Piece* p = board[bx][by];
+    auto moves = p->validMoves();
+    for  (auto m : moves) {
+      std::cout << "Moves" << std::endl;
+      int x = m.first;
+      int y = m.second;
+      valid[x][y] = VALID;
+      changed[x][y] = true;
+    }
+
   }
 
   bool validateSelection(int bx, int by) {
@@ -233,8 +241,8 @@ private:
     }
 
     for (int i = 0; i < 8; i++) {
-      board[i][1] = new Pawn(WHITE);
-      board[i][6] = new Pawn(BLACK);
+      board[i][1] = new Pawn(WHITE, i, 1);
+      board[i][6] = new Pawn(BLACK, i, 6);
     }
   }
 
@@ -243,7 +251,7 @@ private:
   bool changed[8][8];
 
   // a list of valid moves for the current selection
-  bool valid[8][8];
+  int valid[8][8];
 
   bool init;
 };

@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <iostream>
+#include <vector>
 
 const int WHITE = 0;
 const int BLACK = 1;
@@ -12,9 +13,15 @@ class Piece {
 
 public:
 
-  Piece(int color, std::string blackImg, std::string whiteImg) {
+  Piece(int _color,
+	int _x,
+	int _y,
+	std::string blackImg,
+	std::string whiteImg) : x(_x), y(_y), color(_color) {
     this->surface = color == BLACK ? loadPiece(blackImg) : loadPiece(whiteImg);
   }
+
+  virtual std::vector<std::pair<int, int> > validMoves() = 0;
 
   virtual ~Piece() {}
 
@@ -27,6 +34,10 @@ public:
     SDL_BlitSurface(this->surface, NULL, srcsurf, &rect);
   }
 
+  void move(int toX, int toY) {
+    x = toX;
+    y = toY;
+  }
 
 protected:
   int toDispX(int bx) {
@@ -50,6 +61,9 @@ protected:
   }
 
   SDL_Surface* surface;
+
+  int x, y;
+  int color;
 };
 
 

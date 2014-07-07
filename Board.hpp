@@ -58,6 +58,10 @@ public:
         rect.w = 80;
         rect.h = 80;
 
+	// redraw square
+	drawSquare(i, j, surface);
+
+	// apply highlight
         if (valid[i][j] != INVALID) {
           if (valid[i][j] == SOURCE)
             SDL_FillRect(surface, &rect,
@@ -67,21 +71,14 @@ public:
             SDL_FillRect(surface, &rect,
                          SDL_MapRGB(surface->format, 0, 255, 0));
           }
-
-          if (board[i][j] != nullptr)
-            board[i][j]->draw(surface, i, j);
-
-          continue;
         }
 
+	// draw piece
         if (board[i][j] != nullptr) {
           // reset square and draw piece
-	  drawSquare(i, j, surface);
           board[i][j]->draw(surface, i, j);
           continue;
         }
-
-	drawSquare(i, j, surface);
       }
 
     for (int i = 0; i < 8; i++)

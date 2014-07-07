@@ -33,10 +33,10 @@ bool Board::draw(SDL_Surface* surface) {
       updateCount++;
 
       SDL_Rect rect;
-      rect.x = toDispX(i);
-      rect.y = toDispY(j);
-      rect.w = 80;
-      rect.h = 80;
+      rect.x = toDispX(i) + 20;
+      rect.y = toDispY(j) + 20;
+      rect.w = 40;
+      rect.h = 40;
 
       // redraw square
       drawSquare(i, j, surface);

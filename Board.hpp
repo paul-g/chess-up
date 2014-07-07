@@ -39,31 +39,18 @@ public:
 
     if (init) {
       for (int i = 0; i < 8; i++)
-        for (int j = 0; j < 8; j++) {
-          SDL_Rect rect;
-          rect.x = toDispX(i);
-          rect.y = toDispY(j);
-          rect.w = 80;
-          rect.h = 80;
-          if ((i + j) % 2 == 0)
-            SDL_FillRect(surface, &rect,
-                         SDL_MapRGB(surface->format, 210, 210, 210));
-          else
-            SDL_FillRect(surface, &rect,
-                         SDL_MapRGB(surface->format, 125, 125, 125));
-        }
+        for (int j = 0; j < 8; j++)
+	  drawSquare(i, j, surface);
       init = false;
       return true;
     }
 
     for (int i = 0; i < 8; i++)
       for (int j = 0; j < 8; j++) {
-
         if (!changed[i][j])
           continue;
         updated = true;
         updateCount++;
-
 
         SDL_Rect rect;
         rect.x = toDispX(i);
@@ -89,23 +76,12 @@ public:
 
         if (board[i][j] != nullptr) {
           // reset square and draw piece
-          if ((i + j) % 2 == 0)
-            SDL_FillRect(surface, &rect,
-                         SDL_MapRGB(surface->format, 210, 210, 210));
-          else
-            SDL_FillRect(surface, &rect,
-                         SDL_MapRGB(surface->format, 125, 125, 125));
-
+	  drawSquare(i, j, surface);
           board[i][j]->draw(surface, i, j);
           continue;
         }
 
-        if ((i + j) % 2 == 0)
-          SDL_FillRect(surface, &rect,
-                       SDL_MapRGB(surface->format, 210, 210, 210));
-        else
-          SDL_FillRect(surface, &rect,
-                       SDL_MapRGB(surface->format, 125, 125, 125));
+	drawSquare(i, j, surface);
       }
 
     for (int i = 0; i < 8; i++)
@@ -252,6 +228,21 @@ private:
       board[i][1] = new Pawn(WHITE, i, 1);
       board[i][6] = new Pawn(BLACK, i, 6);
     }
+  }
+
+  void drawSquare(int i, int j, SDL_Surface* surface) {
+    SDL_Rect rect;
+    rect.x = toDispX(i);
+    rect.y = toDispY(j);
+    rect.w = 80;
+    rect.h = 80;
+    if ((i + j) % 2 == 0)
+      SDL_FillRect(surface, &rect,
+                   SDL_MapRGB(surface->format, 210, 210, 210));
+    else
+      SDL_FillRect(surface, &rect,
+                   SDL_MapRGB(surface->format, 125, 125, 125));
+
   }
 
   // board model

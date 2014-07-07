@@ -30,6 +30,8 @@ public:
   // move piece from -> to coordinates (display coordinates)
   void movePiece(int fromX, int fromY, int  toX, int toY);
 
+  int colorAt(int bx, int by);
+
 private:
   void clearValid();
   void updateValid(int bx, int by);
@@ -38,6 +40,7 @@ private:
   bool validateMove(int fx, int fy, int tx, int ty);
   void initBoard();
   void drawSquare(int i, int j, SDL_Surface* surface);
+
 
   inline int toDispX(int bx) const {
     return 80 * bx;

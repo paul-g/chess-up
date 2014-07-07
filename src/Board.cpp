@@ -160,9 +160,18 @@ void Board::initBoard() {
   }
 
   for (int i = 0; i < 8; i++) {
-    board[i][1] = new Pawn(WHITE, i, 1);
-    board[i][6] = new Pawn(BLACK, i, 6);
+    board[i][1] = new Pawn(*this, WHITE, i, 1);
+    board[i][6] = new Pawn(*this, BLACK, i, 6);
   }
+}
+
+int Board::colorAt(int bx, int by) {
+  if (bx < 0 || bx > 7 ||
+      by < 0 || by > 7 ||
+      board[bx][by] == nullptr)
+    return NONE;
+
+  return board[bx][by]->getColor();
 }
 
 void Board::drawSquare(int i, int j, SDL_Surface* surface) {

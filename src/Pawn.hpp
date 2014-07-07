@@ -8,8 +8,8 @@
 class Pawn : public Piece {
 
 public:
-  Pawn(int color, int x, int y) :
-    Piece(color, x, y, "black_pawn.bmp", "white_pawn.bmp")
+  Pawn(Board& _board, int color, int x, int y) :
+    Piece(_board, color, x, y, "black_pawn.bmp", "white_pawn.bmp")
   {}
 
   ~Pawn() {

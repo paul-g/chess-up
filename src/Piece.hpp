@@ -6,18 +6,22 @@
 #include <iostream>
 #include <vector>
 
+class Board;
+
 const int WHITE = 0;
 const int BLACK = 1;
+const int NONE = 2;
 
 class Piece {
 
 public:
 
-  Piece(int _color,
-	int _x,
-	int _y,
-	std::string blackImg,
-	std::string whiteImg) : x(_x), y(_y), color(_color) {
+  Piece(Board& _board,
+        int _color,
+        int _x,
+        int _y,
+        std::string blackImg,
+        std::string whiteImg) : x(_x), y(_y), color(_color), board(_board) {
     this->surface = color == BLACK ? loadPiece(blackImg) : loadPiece(whiteImg);
   }
 
@@ -30,6 +34,10 @@ public:
   void move(int toX, int toY) {
     x = toX;
     y = toY;
+  }
+
+  inline int getColor() const {
+    return color;
   }
 
 protected:
@@ -47,6 +55,7 @@ protected:
   SDL_Surface* surface;
   int x, y;
   int color;
+  Board& board;
 };
 
 

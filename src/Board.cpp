@@ -94,8 +94,12 @@ void Board::movePiece(int fromX, int fromY, int  toX, int toY) {
   int tx = toBoardX(toX);
   int ty = toBoardY(toY);
 
-  if (!validateMove(fx, fy, tx, ty))
+  if (!validateMove(fx, fy, tx, ty)) {
+    cout << "Invalid move (" << fx << " " << fy;
+    cout << ") --> ("  << tx << " " << ty << ")" << endl;
+    clearValid();
     return;
+  }
 
   Piece *p = board[fx][fy];
   board[tx][ty] = p;
@@ -151,8 +155,7 @@ void Board::printMove(int fx, int fy, int tx, int ty) {
 }
 
 bool Board::validateMove(int fx, int fy, int tx, int ty) {
-  // TODO add proper validation
-  return fy != ty || fx != tx;
+  return valid[tx][ty] == VALID;
 }
 
 void Board::initBoard() {

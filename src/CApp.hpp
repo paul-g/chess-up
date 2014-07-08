@@ -9,7 +9,7 @@ class CApp {
 private:
   bool running;
   bool selected; // selected a piece to move from
-  Board board;
+  Board* board;
 
   // to and from piece locations (in display coordinates)
   int fromX, fromY, toX, toY;
@@ -24,6 +24,7 @@ private:
 public:
 
   CApp();
+  ~CApp();
 
   int OnExecute();
 

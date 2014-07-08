@@ -19,10 +19,10 @@ using namespace std;
 
 class Board {
 public:
-  Board();
+  Board(SDL_Surface* surface);
   ~Board();
 
-  bool draw(SDL_Surface* surface);
+  bool draw();
 
   // Returns true iff the select square is the source of a valid move
   bool select(int dx, int dy);
@@ -39,8 +39,8 @@ private:
   void printMove(int fx, int fy, int tx, int ty);
   bool validateMove(int fx, int fy, int tx, int ty);
   void initBoard();
-  void drawSquare(int i, int j, SDL_Surface* surface);
-
+  void drawSquare(int i, int j);
+  void capture(Piece* p);
 
   inline int toDispX(int bx) const {
     return 80 * bx;
@@ -64,7 +64,7 @@ private:
 
   // a list of valid moves for the current selection
   int valid[8][8];
-
+  SDL_Surface* surface;
   bool init;
   int toMove;
 };

@@ -1,7 +1,7 @@
 #include "Board.hpp"
 
-Board::Board() {
-  init = true;
+Board::Board(SDL_Surface* _surface) :
+  surface(_surface), init(true) {
   toMove = WHITE;
   initBoard();
 }
@@ -14,14 +14,14 @@ Board::~Board() {
         delete board[i][j];
 }
 
-bool Board::draw(SDL_Surface* surface) {
+bool Board::draw() {
   bool updated = false;
   int updateCount = 0;
 
   if (init) {
     for (int i = 0; i < 8; i++)
       for (int j = 0; j < 8; j++)
-        drawSquare(i, j, surface);
+        drawSquare(i, j);
     init = false;
     return true;
   }
@@ -40,7 +40,7 @@ bool Board::draw(SDL_Surface* surface) {
       rect.h = 40;
 
       // redraw square
-      drawSquare(i, j, surface);
+      drawSquare(i, j);
 
       // apply highlight
       if (valid[i][j] != INVALID) {
@@ -102,6 +102,11 @@ void Board::movePiece(int fromX, int fromY, int  toX, int toY) {
   }
 
   Piece *p = board[fx][fy];
+
+  if (board[tx][ty] && board[tx][ty]->getColor() != toMove) {
+    capture(board[tx][ty]);
+  }
+
   board[tx][ty] = p;
   board[fx][fy] = nullptr;
   p->move(tx, ty);
@@ -183,7 +188,7 @@ int Board::colorAt(int bx, int by) {
   return board[bx][by]->getColor();
 }
 
-void Board::drawSquare(int i, int j, SDL_Surface* surface) {
+void Board::drawSquare(int i, int j) {
   SDL_Rect rect;
   rect.x = toDispX(i);
   rect.y = toDispY(j);
@@ -196,4 +201,9 @@ void Board::drawSquare(int i, int j, SDL_Surface* surface) {
     SDL_FillRect(surface, &rect,
                  SDL_MapRGB(surface->format, 125, 125, 125));
 
+}
+
+void Board::capture(Piece* p) {
+  int pos = p->getColor() == WHITE ? 6 : 1;
+  p->draw(surface, 8, pos);
 }

@@ -8,6 +8,10 @@ CApp::CApp() {
   toX = toY = fromX = fromY = 0;
 }
 
+CApp::~CApp() {
+  delete board;
+}
+
 int CApp::OnExecute() {
 
   if (!OnInit()) {
@@ -39,8 +43,8 @@ bool CApp::OnInit() {
   }
 
   win = SDL_CreateWindow("Hello World!",
-                                     100, 100, 640, 640,
-                                     SDL_WINDOW_SHOWN);
+			 100, 100, 880, 640,
+			 SDL_WINDOW_SHOWN);
   if (win == nullptr){
     std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
     SDL_Quit();
@@ -50,7 +54,8 @@ bool CApp::OnInit() {
   surface = SDL_GetWindowSurface(win);
   SDL_FillRect(surface, NULL,
 	       SDL_MapRGB(surface->format, 125, 125, 125));
-  board.draw(surface);
+  board = new Board(surface);
+  board->draw();
   SDL_UpdateWindowSurface(win);
   return true;
 }
@@ -72,9 +77,9 @@ void CApp::OnEvent(SDL_Event& e) {
       toX = x;
       toY = y;
       selected = false;
-      board.movePiece(fromX, fromY, toX, toY);
+      board->movePiece(fromX, fromY, toX, toY);
     } else {
-      if (board.select(x, y)) {
+      if (board->select(x, y)) {
 	fromX = x;
 	fromY = y;
 	selected = true;
@@ -86,7 +91,7 @@ void CApp::OnEvent(SDL_Event& e) {
 void CApp::OnLoop() {}
 
 void CApp::OnRender() {
-  board.draw(surface);
+  board->draw();
   SDL_UpdateWindowSurface(win);
 }
 

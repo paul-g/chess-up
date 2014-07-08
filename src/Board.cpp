@@ -2,6 +2,7 @@
 
 Board::Board() {
   init = true;
+  toMove = WHITE;
   initBoard();
 }
 
@@ -102,6 +103,8 @@ void Board::movePiece(int fromX, int fromY, int  toX, int toY) {
   p->move(tx, ty);
 
   clearValid();
+
+  toMove = (toMove == WHITE) ? BLACK : WHITE;
 }
 
 void Board::clearValid() {
@@ -135,7 +138,10 @@ void Board::updateValid(int bx, int by) {
 }
 
 bool Board::validateSelection(int bx, int by) {
-  return board[bx][by] != nullptr;
+  Piece* p = board[bx][by];
+  if (!p)
+    return false;
+  return p->getColor() == toMove;
 }
 
 void Board::printMove(int fx, int fy, int tx, int ty) {

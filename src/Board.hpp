@@ -66,6 +66,7 @@ private:
   int valid[8][8];
 
   bool init;
+  int toMove;
 };
 
 

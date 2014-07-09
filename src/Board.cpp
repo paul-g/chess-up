@@ -1,5 +1,8 @@
 #include "Board.hpp"
 
+#include "SDL2/SDL_ttf.h"
+#include <sstream>
+
 Board::Board(SDL_Surface* _surface) :
   surface(_surface), init(true) {
   toMove = WHITE;
@@ -12,6 +15,8 @@ Board::~Board() {
     for (int j = 0; j < 8; j++)
       if (board[i][j] != nullptr)
         delete board[i][j];
+  TTF_CloseFont(font);
+  TTF_Quit();
 }
 
 bool Board::draw() {
@@ -177,6 +182,21 @@ void Board::initBoard() {
     board[i][1] = new Pawn(*this, WHITE, i, 1);
     board[i][6] = new Pawn(*this, BLACK, i, 6);
   }
+
+  // init fonts
+  if (TTF_Init() == -1) {
+    printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+  }
+
+  font = TTF_OpenFont( "fonts/FreeSerif.ttf", 20);
+  if (font == NULL) {
+    cerr << "TTF_OpenFont() Failed: " << TTF_GetError() << endl;
+    TTF_Quit();
+    SDL_Quit();
+    exit(1);
+  }
+
+  text_color = {255, 255, 255};
 }
 
 int Board::colorAt(int bx, int by) {
@@ -204,6 +224,34 @@ void Board::drawSquare(int i, int j) {
 }
 
 void Board::capture(Piece* p) {
-  int pos = p->getColor() == WHITE ? 6 : 1;
+  bool white = p->getColor() == WHITE;
+
+  stringstream ss;
+  int pos;
+  ss << "x ";
+  if (white) {
+    pos = 6;
+    capturedWhite++;
+    ss << capturedWhite;
+  } else {
+    pos = 1;
+    capturedBlack++;
+    ss << capturedBlack;
+  }
+
+  SDL_Surface* text = TTF_RenderText_Solid(font,
+					   ss.str().c_str(),
+                                           text_color);
+  SDL_Rect rect;
+  rect.x = toDispX(8) + 20;
+  rect.y = toDispY(pos) + 80;
+  rect.w = 40;
+  rect.h = 20;
+
+  SDL_FillRect(surface, &rect,
+	       SDL_MapRGB(surface->format, 125, 125, 125));
+
+  SDL_BlitSurface(text, NULL, surface, &rect);
+
   p->draw(surface, 8, pos);
 }

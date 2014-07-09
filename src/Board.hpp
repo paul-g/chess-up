@@ -2,6 +2,7 @@
 #define _BOARD_H_
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <string>
 #include <iostream>
 #include "Piece.hpp"
@@ -67,6 +68,10 @@ private:
   SDL_Surface* surface;
   bool init;
   int toMove;
+  TTF_Font* font;
+  SDL_Color text_color;
+  int capturedWhite = 0;
+  int capturedBlack = 0;
 };
 
 

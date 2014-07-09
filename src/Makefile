@@ -5,7 +5,7 @@ SDL_LINK = $(shell pkg-config --libs sdl2)
 	$(CXX) -O3 -std=c++11 -c $(SDL_INC) $^
 
 main: CApp.o Board.o Pawn.o Piece.o
-	$(CXX) -o main $(SDL_INC) $^ $(SDL_LINK)
+	$(CXX) -o main $(SDL_INC) $^ $(SDL_LINK) -lSDL2_ttf
 
 clean:
 	rm -f main *.o *.gch

@@ -21,13 +21,6 @@ private:
   SDL_Window *win;   // the game window
   SDL_Surface* surface; // surface for the whole game
 
-public:
-
-  CApp();
-  ~CApp();
-
-  int OnExecute();
-
   bool OnInit();
 
   void OnEvent(SDL_Event&);
@@ -38,6 +31,12 @@ public:
 
   void OnCleanup();
 
+public:
+
+  CApp();
+  ~CApp();
+
+  int OnExecute();
 };
 
 #endif /* _CAPP_H_ */

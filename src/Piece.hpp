@@ -12,16 +12,28 @@ const int WHITE = 0;
 const int BLACK = 1;
 const int NONE = 2;
 
+// piece IDS
+// TODO should use enum or a more OO approach
+const int MAX_PID = 5;
+const int PAWN_ID = 0;
+const int KNIGHT_ID = 1;
+const int BISHOP_ID = 2;
+const int ROOK_ID = 3;
+const int QUEEN_ID = 4;
+const int KING_ID = 5;
+
 class Piece {
 
 public:
 
   Piece(Board& _board,
+	int _pId,
         int _color,
         int _x,
         int _y,
         std::string blackImg,
-        std::string whiteImg) : x(_x), y(_y), color(_color), board(_board) {
+        std::string whiteImg) :
+    pid(_pId), x(_x), y(_y), color(_color), board(_board) {
     this->surface = color == BLACK ? loadPiece(blackImg) : loadPiece(whiteImg);
   }
 
@@ -40,6 +52,10 @@ public:
     return color;
   }
 
+  inline int getId() const {
+    return pid;
+  }
+
 protected:
   inline int toDispX(int bx) const {
     return 80 * bx;
@@ -56,6 +72,7 @@ protected:
   int x, y;
   int color;
   Board& board;
+  int pid;
 };
 
 

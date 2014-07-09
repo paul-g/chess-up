@@ -40,8 +40,11 @@ private:
   void printMove(int fx, int fy, int tx, int ty);
   bool validateMove(int fx, int fy, int tx, int ty);
   void initBoard();
-  void drawSquare(int i, int j);
   void capture(Piece* p);
+
+  // rendering functions
+  void drawSquare(int i, int j);
+  void drawCaptured();
 
   inline int toDispX(int bx) const {
     return 80 * bx;
@@ -72,6 +75,8 @@ private:
   SDL_Color text_color;
   int capturedWhite = 0;
   int capturedBlack = 0;
+  std::vector<Piece*> captured;
+  std::pair<Piece*, int> capturedCount[2][MAX_PID];
 };
 
 

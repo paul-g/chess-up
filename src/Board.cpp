@@ -15,6 +15,10 @@ Board::~Board() {
     for (int j = 0; j < 8; j++)
       if (board[i][j])
         delete board[i][j];
+
+  for (auto p : captured)
+    delete p;
+
   TTF_CloseFont(font);
   TTF_Quit();
 }
@@ -66,6 +70,8 @@ bool Board::draw() {
         continue;
       }
     }
+
+  drawCaptured();
 
   for (int i = 0; i < 8; i++)
     for (int j = 0; j < 8; j++)
@@ -178,6 +184,10 @@ void Board::initBoard() {
     }
   }
 
+  for (int i = 0; i < 2; i++)
+    for (int j = 0; j < MAX_PID; j++)
+      capturedCount[i][j] = std::make_pair(nullptr, 0);
+
   for (int i = 0; i < 8; i++) {
     board[i][1] = new Pawn(*this, WHITE, i, 1);
     board[i][6] = new Pawn(*this, BLACK, i, 6);
@@ -224,34 +234,43 @@ void Board::drawSquare(int i, int j) {
 }
 
 void Board::capture(Piece* p) {
-  bool white = p->getColor() == WHITE;
+  captured.push_back(p);
+  int c = p->getColor();
+  int pid = p->getId();
+  std::pair<Piece*, int> pp = capturedCount[c][pid];
+  capturedCount[c][pid] = std::make_pair(p, pp.second + 1);
+}
 
-  stringstream ss;
-  int pos;
-  ss << "x ";
-  if (white) {
-    pos = 6;
-    capturedWhite++;
-    ss << capturedWhite;
-  } else {
-    pos = 1;
-    capturedBlack++;
-    ss << capturedBlack;
+void Board::drawCaptured() {
+  // TOOD should only draw the changed pieces
+  for (int i = 0; i < 2; i++) {
+    int pos = (i == 0) ? 6 : 1;
+    stringstream ss;
+    ss << "x ";
+    for (int pId = 0; pId < MAX_PID; pId++) {
+      int count = capturedCount[i][pId].second;
+      ss << count;
+      if (count == 0)
+	continue;
+      int x = 8 + pId % 3;
+      int y = pos - pId / 3;
+      capturedCount[i][pId].first->draw(surface, x, y);
+
+      SDL_Rect rect;
+      rect.x = toDispX(x) + 20;
+      // TODO adjust y position of text
+      rect.y = toDispY(y) + 80;
+      rect.w = 40;
+      rect.h = 20;
+
+      SDL_Surface* text = TTF_RenderText_Solid(font,
+                                               ss.str().c_str(),
+                                               text_color);
+      SDL_FillRect(surface, &rect,
+                   SDL_MapRGB(surface->format, 125, 125, 125));
+
+      SDL_BlitSurface(text, NULL, surface, &rect);
+
+    }
   }
-
-  SDL_Surface* text = TTF_RenderText_Solid(font,
-					   ss.str().c_str(),
-                                           text_color);
-  SDL_Rect rect;
-  rect.x = toDispX(8) + 20;
-  rect.y = toDispY(pos) + 80;
-  rect.w = 40;
-  rect.h = 20;
-
-  SDL_FillRect(surface, &rect,
-	       SDL_MapRGB(surface->format, 125, 125, 125));
-
-  SDL_BlitSurface(text, NULL, surface, &rect);
-
-  p->draw(surface, 8, pos);
 }

@@ -13,7 +13,7 @@ Board::~Board() {
   std::cout << "Board::~Board" << std::endl;
   for (int i = 0; i < 8; i++)
     for (int j = 0; j < 8; j++)
-      if (board[i][j] != nullptr)
+      if (board[i][j])
         delete board[i][j];
   TTF_CloseFont(font);
   TTF_Quit();
@@ -60,7 +60,7 @@ bool Board::draw() {
       }
 
       // draw piece
-      if (board[i][j] != nullptr) {
+      if (board[i][j]) {
         // reset square and draw piece
         board[i][j]->draw(surface, i, j);
         continue;
@@ -202,7 +202,7 @@ void Board::initBoard() {
 int Board::colorAt(int bx, int by) {
   if (bx < 0 || bx > 7 ||
       by < 0 || by > 7 ||
-      board[bx][by] == nullptr)
+      !board[bx][by])
     return NONE;
 
   return board[bx][by]->getColor();

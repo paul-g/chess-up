@@ -16,8 +16,6 @@ const int INVALID = 0;
 const int SOURCE = 1;
 const int VALID = 2;
 
-using namespace std;
-
 class Board {
 public:
   Board(SDL_Surface* surface);

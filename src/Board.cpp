@@ -3,6 +3,8 @@
 #include "SDL2/SDL_ttf.h"
 #include <sstream>
 
+using namespace std;
+
 Board::Board(SDL_Surface* _surface) :
   surface(_surface), init(true) {
   toMove = WHITE;
@@ -10,7 +12,7 @@ Board::Board(SDL_Surface* _surface) :
 }
 
 Board::~Board() {
-  std::cout << "Board::~Board" << std::endl;
+  cout << "Board::~Board" << endl;
   for (int i = 0; i < 8; i++)
     for (int j = 0; j < 8; j++)
       if (board[i][j])
@@ -78,7 +80,7 @@ bool Board::draw() {
       changed[i][j] = false;
 
   if (updated)
-    std::cout << "Updated cells " << updateCount << std::endl;
+    cout << "Updated cells " << updateCount << endl;
 
   init = false;
   return true;
@@ -148,7 +150,7 @@ void Board::updateValid(int bx, int by) {
   Piece* p = board[bx][by];
   auto moves = p->validMoves();
   for  (auto m : moves) {
-    std::cout << "Moves" << std::endl;
+    cout << "Moves" << endl;
     int x = m.first;
     int y = m.second;
     valid[x][y] = VALID;
@@ -165,9 +167,9 @@ bool Board::validateSelection(int bx, int by) {
 }
 
 void Board::printMove(int fx, int fy, int tx, int ty) {
-  std::cout << "Moving piece from " << fx << " " << fy;
-  std::cout << " to " << tx << " " << ty << std::endl;
-  std::cout << board[fx][fy] << std::endl;
+  cout << "Moving piece from " << fx << " " << fy;
+  cout << " to " << tx << " " << ty << endl;
+  cout << board[fx][fy] << endl;
 }
 
 bool Board::validateMove(int fx, int fy, int tx, int ty) {
@@ -175,7 +177,7 @@ bool Board::validateMove(int fx, int fy, int tx, int ty) {
 }
 
 void Board::initBoard() {
-  std::cout << "Init board" << std::endl;
+  cout << "Init board" << endl;
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
       board[i][j] = nullptr;
@@ -186,7 +188,7 @@ void Board::initBoard() {
 
   for (int i = 0; i < 2; i++)
     for (int j = 0; j < MAX_PID; j++)
-      capturedCount[i][j] = std::make_pair(nullptr, 0);
+      capturedCount[i][j] = make_pair(nullptr, 0);
 
   for (int i = 0; i < 8; i++) {
     board[i][1] = new Pawn(*this, WHITE, i, 1);
@@ -233,8 +235,8 @@ void Board::capture(Piece* p) {
   captured.push_back(p);
   int c = p->getColor();
   int pid = p->getId();
-  std::pair<Piece*, int> pp = capturedCount[c][pid];
-  capturedCount[c][pid] = std::make_pair(p, pp.second + 1);
+  pair<Piece*, int> pp = capturedCount[c][pid];
+  capturedCount[c][pid] = make_pair(p, pp.second + 1);
 }
 
 void Board::drawCaptured() {

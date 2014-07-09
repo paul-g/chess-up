@@ -224,13 +224,9 @@ void Board::drawSquare(int i, int j) {
   rect.y = toDispY(j);
   rect.w = 80;
   rect.h = 80;
-  if ((i + j) % 2 == 0)
-    SDL_FillRect(surface, &rect,
-                 SDL_MapRGB(surface->format, 210, 210, 210));
-  else
-    SDL_FillRect(surface, &rect,
-                 SDL_MapRGB(surface->format, 125, 125, 125));
-
+  int c = (i + j) % 2 == 0 ? 210 : 125;
+  SDL_FillRect(surface, &rect,
+	       SDL_MapRGB(surface->format, c, c, c));
 }
 
 void Board::capture(Piece* p) {

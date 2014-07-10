@@ -3,6 +3,8 @@
 #include "SDL2/SDL_ttf.h"
 #include <sstream>
 
+#include "Bishop.hpp"
+
 using namespace std;
 
 Board::Board(SDL_Surface* _surface) :
@@ -194,6 +196,11 @@ void Board::initBoard() {
     board[i][1] = new Pawn(*this, WHITE, i, 1);
     board[i][6] = new Pawn(*this, BLACK, i, 6);
   }
+
+  board[2][0] = new Bishop(*this, WHITE, 2, 0);
+  board[5][0] = new Bishop(*this, WHITE, 5, 0);
+  board[2][7] = new Bishop(*this, BLACK, 2, 7);
+  board[5][7] = new Bishop(*this, BLACK, 5, 7);
 
   // init fonts
   if (TTF_Init() == -1) {

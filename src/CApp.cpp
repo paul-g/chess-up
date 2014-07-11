@@ -1,6 +1,7 @@
 #include "CApp.hpp"
 
 #include <iostream>
+#include <SDL2/SDL_image.h>
 
 CApp::CApp() {
   running = true;
@@ -49,6 +50,13 @@ bool CApp::OnInit() {
     std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
     SDL_Quit();
     return false;
+  }
+
+  //Initialize PNG loading
+  int imgFlags = IMG_INIT_PNG;
+  if( !( IMG_Init( imgFlags ) & imgFlags ) ) {
+      printf( "SDL_image could not initialize! SDL_image Error: %s\n",
+	      IMG_GetError() );
   }
 
   surface = SDL_GetWindowSurface(win);

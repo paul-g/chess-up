@@ -1,5 +1,7 @@
 #include "Piece.hpp"
 
+#include <SDL2/SDL_image.h>
+
 void Piece::draw(SDL_Surface* srcsurf, int bx, int by) {
   SDL_Rect rect;
   rect.x = toDispX(bx);
@@ -16,7 +18,7 @@ void Piece::setTransparent(SDL_Surface* surface) {
 }
 
 SDL_Surface* Piece::loadPiece(std::string path) {
-  SDL_Surface* s = SDL_LoadBMP(path.c_str());
+  SDL_Surface* s = IMG_Load(path.c_str());
   setTransparent(s);
   return s;
 }

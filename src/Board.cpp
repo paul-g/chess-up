@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Bishop.hpp"
+#include "Rook.hpp"
 
 using namespace std;
 
@@ -201,6 +202,12 @@ void Board::initBoard() {
   board[5][0] = new Bishop(*this, WHITE, 5, 0);
   board[2][7] = new Bishop(*this, BLACK, 2, 7);
   board[5][7] = new Bishop(*this, BLACK, 5, 7);
+
+  board[0][0] = new Rook(*this, WHITE, 0, 0);
+  board[7][0] = new Rook(*this, WHITE, 0, 0);
+
+  board[0][7] = new Rook(*this, BLACK, 0, 7);
+  board[7][7] = new Rook(*this, BLACK, 7, 7);
 
   // init fonts
   if (TTF_Init() == -1) {

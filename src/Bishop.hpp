@@ -16,10 +16,6 @@ public:
 
   std::vector<std::pair<int, int> > validMoves();
 
-private:
-  void checkDiagonal(int modx, int mody,
-		     std::vector<std::pair<int, int> > *v);
-
 };
 
 #endif /* _BISHOP_H_ */

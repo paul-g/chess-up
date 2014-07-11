@@ -204,7 +204,7 @@ void Board::initBoard() {
   board[5][7] = new Bishop(*this, BLACK, 5, 7);
 
   board[0][0] = new Rook(*this, WHITE, 0, 0);
-  board[7][0] = new Rook(*this, WHITE, 0, 0);
+  board[7][0] = new Rook(*this, WHITE, 7, 0);
 
   board[0][7] = new Rook(*this, BLACK, 0, 7);
   board[7][7] = new Rook(*this, BLACK, 7, 7);

@@ -67,6 +67,8 @@ protected:
 
   void setTransparent(SDL_Surface* surface);
   SDL_Surface* loadPiece(std::string path);
+  void checkDirection(int modx, int mody,
+		      std::vector<std::pair<int, int> > *v);
 
   SDL_Surface* surface;
   int x, y;

@@ -5,6 +5,7 @@
 
 #include "Bishop.hpp"
 #include "Rook.hpp"
+#include "Queen.hpp"
 
 using namespace std;
 
@@ -208,6 +209,10 @@ void Board::initBoard() {
 
   board[0][7] = new Rook(*this, BLACK, 0, 7);
   board[7][7] = new Rook(*this, BLACK, 7, 7);
+
+  board[4][0] = new Queen(*this, WHITE, 4, 0);
+  board[4][7] = new Queen(*this, BLACK, 4, 7);
+
 
   // init fonts
   if (TTF_Init() == -1) {

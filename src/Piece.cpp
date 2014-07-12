@@ -35,21 +35,32 @@ void Piece::checkDirection(int modx, int mody,
     int tox = x + modx * i;
     int toy = y + mody * i;
 
-    if (tox > 7 || toy > 7 ||
-        tox < 0 || toy < 0)
-      continue;
+    int cm = canMove(tox, toy);
 
-    int toColor = board.colorAt(tox, toy);
-
-    if (toColor == color)
+    if (cm == 0)
       break;
 
     v->push_back(std::make_pair(tox, toy));
     cout << "Adding pair " << tox << " " << toy << endl;
-    if (toColor != NONE) {
+    if (cm == 1) {
       cout << "Different color, stopping" << endl;
       break;
     }
   }
 
+}
+
+
+// Returns 0 (can't move), 1 (move with capture), 2 (move)
+int Piece::canMove(int tox, int toy) {
+    if (tox > 7 || toy > 7 ||
+        tox < 0 || toy < 0)
+      return 0;
+
+    int toColor = board.colorAt(tox, toy);
+
+    if (toColor == color)
+      return 0;
+
+    return (toColor == NONE) ? 2 : 1;
 }

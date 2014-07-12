@@ -70,6 +70,7 @@ protected:
   void checkDirection(int modx, int mody,
 		      std::vector<std::pair<int, int> > *v,
 		      int maxDepth=8);
+  int canMove(int tox, int toy);
 
   SDL_Surface* surface;
   int x, y;

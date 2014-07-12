@@ -6,6 +6,7 @@
 #include "Bishop.hpp"
 #include "Rook.hpp"
 #include "Queen.hpp"
+#include "Knight.hpp"
 
 using namespace std;
 
@@ -203,6 +204,11 @@ void Board::initBoard() {
   board[5][0] = new Bishop(*this, WHITE, 5, 0);
   board[2][7] = new Bishop(*this, BLACK, 2, 7);
   board[5][7] = new Bishop(*this, BLACK, 5, 7);
+
+  board[1][0] = new Knight(*this, WHITE, 1, 0);
+  board[6][0] = new Knight(*this, WHITE, 6, 0);
+  board[1][7] = new Knight(*this, BLACK, 1, 7);
+  board[6][7] = new Knight(*this, BLACK, 6, 7);
 
   board[0][0] = new Rook(*this, WHITE, 0, 0);
   board[7][0] = new Rook(*this, WHITE, 7, 0);

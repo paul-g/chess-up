@@ -28,8 +28,9 @@ SDL_Surface* Piece::loadPiece(std::string path) {
 }
 
 void Piece::checkDirection(int modx, int mody,
-			   std::vector<std::pair<int, int> > *v) {
-  for (int i = 1; i < 8; i++) {
+			   std::vector<std::pair<int, int> > *v,
+			   int maxDepth) {
+  for (int i = 1; i < maxDepth; i++) {
 
     int tox = x + modx * i;
     int toy = y + mody * i;

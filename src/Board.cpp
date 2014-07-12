@@ -7,6 +7,7 @@
 #include "Rook.hpp"
 #include "Queen.hpp"
 #include "Knight.hpp"
+#include "King.hpp"
 
 using namespace std;
 
@@ -218,6 +219,9 @@ void Board::initBoard() {
 
   board[4][0] = new Queen(*this, WHITE, 4, 0);
   board[4][7] = new Queen(*this, BLACK, 4, 7);
+
+  board[3][0] = new King(*this, WHITE, 3, 0);
+  board[3][7] = new King(*this, BLACK, 3, 7);
 
 
   // init fonts

@@ -272,13 +272,13 @@ void Board::drawCaptured() {
   // TOOD should only draw the changed pieces
   for (int i = 0; i < 2; i++) {
     int pos = (i == 0) ? 6 : 1;
-    stringstream ss;
-    ss << "x ";
     for (int pId = 0; pId < MAX_PID; pId++) {
       int count = capturedCount[i][pId].second;
-      ss << count;
       if (count == 0)
 	continue;
+      stringstream ss;
+      ss << "x ";
+      ss << count;
       int x = 8 + pId % 3;
       int y = pos - pId / 3;
       capturedCount[i][pId].first->draw(surface, x, y);

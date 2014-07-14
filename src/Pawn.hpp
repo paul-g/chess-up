@@ -8,16 +8,13 @@
 class Pawn : public Piece {
 
 public:
-  Pawn(Board& _board, int color, int x, int y) :
-    Piece(_board, PAWN_ID, color, x, y, "black_pawn.png", "white_pawn.png")
-  {}
+  Pawn(Board &_board, int color, int x, int y)
+      : Piece(_board, PAWN_ID, color, x, y, "black_pawn.png",
+              "white_pawn.png") {}
 
-  ~Pawn() {
-    SDL_FreeSurface(surface);
-  }
+  ~Pawn() { SDL_FreeSurface(surface); }
 
   std::vector<std::pair<int, int> > validMoves();
 };
-
 
 #endif /* _PAWN_H_ */

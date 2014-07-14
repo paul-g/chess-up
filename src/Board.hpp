@@ -18,7 +18,7 @@ const int VALID = 2;
 
 class Board {
 public:
-  Board(SDL_Surface* surface);
+  Board(SDL_Surface *surface);
   ~Board();
 
   bool draw();
@@ -27,7 +27,7 @@ public:
   bool select(int dx, int dy);
 
   // move piece from -> to coordinates (display coordinates)
-  bool movePiece(int fromX, int fromY, int  toX, int toY);
+  bool movePiece(int fromX, int fromY, int toX, int toY);
 
   int colorAt(int bx, int by);
 
@@ -43,45 +43,36 @@ private:
   void printMove(int fx, int fy, int tx, int ty);
   bool validateMove(int fx, int fy, int tx, int ty);
   void initBoard();
-  void capture(Piece* p);
+  void capture(Piece *p);
   bool inCheck(int color);
 
   // rendering functions
   void drawSquare(int i, int j);
   void drawCaptured();
 
-  inline int toDispX(int bx) const {
-    return 80 * bx;
-  }
+  inline int toDispX(int bx) const { return 80 * bx; }
 
-  inline int toDispY(int by) const {
-    return 80 * by;
-  }
+  inline int toDispY(int by) const { return 80 * by; }
 
-  inline int toBoardX(int dx) const {
-    return dx / 80;
-  }
+  inline int toBoardX(int dx) const { return dx / 80; }
 
-  inline int toBoardY(int dy) const {
-    return dy / 80;
-  }
+  inline int toBoardY(int dy) const { return dy / 80; }
 
   // board model
-  Piece* board[8][8];
+  Piece *board[8][8];
   bool changed[8][8];
 
   // a list of valid moves for the current selection
   int valid[8][8];
-  SDL_Surface* surface;
+  SDL_Surface *surface;
   bool init;
   int toMove;
-  TTF_Font* font;
+  TTF_Font *font;
   SDL_Color text_color;
   int capturedWhite = 0;
   int capturedBlack = 0;
-  std::vector<Piece*> captured;
-  std::pair<Piece*, int> capturedCount[2][MAX_PID];
+  std::vector<Piece *> captured;
+  std::pair<Piece *, int> capturedCount[2][MAX_PID];
 };
-
 
 #endif /* _BOARD_H_ */

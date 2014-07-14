@@ -6,16 +6,13 @@
 class Knight : public Piece {
 
 public:
+  Knight(Board &_board, int color, int x, int y)
+      : Piece(_board, KNIGHT_ID, color, x, y, "black_knight.png",
+              "white_knight.png") {}
 
-  Knight(Board& _board, int color, int x, int y) :
-    Piece(_board, KNIGHT_ID, color, x, y, "black_knight.png", "white_knight.png") {}
-
-  ~Knight() {
-    SDL_FreeSurface(surface);
-  }
+  ~Knight() { SDL_FreeSurface(surface); }
 
   std::vector<std::pair<int, int> > validMoves();
-
 };
 
 #endif /* _KNIGHT_H_ */

@@ -11,9 +11,7 @@ CApp::CApp() {
   toX = toY = fromX = fromY = 0;
 }
 
-CApp::~CApp() {
-  delete board;
-}
+CApp::~CApp() { delete board; }
 
 int CApp::OnExecute() {
 
@@ -36,7 +34,6 @@ int CApp::OnExecute() {
   return 0;
 }
 
-
 bool CApp::OnInit() {
 
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -44,32 +41,29 @@ bool CApp::OnInit() {
     return false;
   }
 
-  win = SDL_CreateWindow("Hello World!",
-                         100, 100, 880, 640,
-                         SDL_WINDOW_SHOWN);
-  if (win == nullptr){
+  win = SDL_CreateWindow("Hello World!", 100, 100, 880, 640, SDL_WINDOW_SHOWN);
+  if (win == nullptr) {
     cout << "SDL_CreateWindow Error: " << SDL_GetError() << endl;
     SDL_Quit();
     return false;
   }
 
-  //Initialize PNG loading
+  // Initialize PNG loading
   int imgFlags = IMG_INIT_PNG;
-  if( !( IMG_Init( imgFlags ) & imgFlags ) ) {
-    printf( "SDL_image could not initialize! SDL_image Error: %s\n",
-            IMG_GetError() );
+  if (!(IMG_Init(imgFlags) & imgFlags)) {
+    printf("SDL_image could not initialize! SDL_image Error: %s\n",
+           IMG_GetError());
   }
 
   surface = SDL_GetWindowSurface(win);
-  SDL_FillRect(surface, NULL,
-               SDL_MapRGB(surface->format, 125, 125, 125));
+  SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 125, 125, 125));
   board = new Board(surface);
   board->draw();
   SDL_UpdateWindowSurface(win);
   return true;
 }
 
-void CApp::OnEvent(SDL_Event& e) {
+void CApp::OnEvent(SDL_Event &e) {
 
   // handle quit event
   if (e.type == SDL_QUIT) {
@@ -118,7 +112,7 @@ void CApp::OnCleanup() {
   SDL_Quit();
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   CApp capp;
   return capp.OnExecute();
 }

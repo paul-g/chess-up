@@ -25,15 +25,9 @@ const int KING_ID = 5;
 class Piece {
 
 public:
-
-  Piece(Board& _board,
-	int _pId,
-        int _color,
-        int _x,
-        int _y,
-        std::string blackImg,
-        std::string whiteImg) :
-    pid(_pId), x(_x), y(_y), color(_color), board(_board) {
+  Piece(Board &_board, int _pId, int _color, int _x, int _y,
+        std::string blackImg, std::string whiteImg)
+      : pid(_pId), x(_x), y(_y), color(_color), board(_board) {
     this->surface = color == BLACK ? loadPiece(blackImg) : loadPiece(whiteImg);
   }
 
@@ -41,43 +35,33 @@ public:
 
   virtual ~Piece() {}
 
-  void draw(SDL_Surface* srcsurf, int bx, int by);
+  void draw(SDL_Surface *srcsurf, int bx, int by);
 
   void move(int toX, int toY) {
     x = toX;
     y = toY;
   }
 
-  inline int getColor() const {
-    return color;
-  }
+  inline int getColor() const { return color; }
 
-  inline int getId() const {
-    return pid;
-  }
+  inline int getId() const { return pid; }
 
 protected:
-  inline int toDispX(int bx) const {
-    return 80 * bx;
-  }
+  inline int toDispX(int bx) const { return 80 * bx; }
 
-  inline int toDispY(int by) const {
-    return 80 * by;
-  }
+  inline int toDispY(int by) const { return 80 * by; }
 
-  void setTransparent(SDL_Surface* surface);
-  SDL_Surface* loadPiece(std::string path);
-  void checkDirection(int modx, int mody,
-		      std::vector<std::pair<int, int> > *v,
-		      int maxDepth=8);
+  void setTransparent(SDL_Surface *surface);
+  SDL_Surface *loadPiece(std::string path);
+  void checkDirection(int modx, int mody, std::vector<std::pair<int, int> > *v,
+                      int maxDepth = 8);
   int canMove(int tox, int toy);
 
-  SDL_Surface* surface;
+  SDL_Surface *surface;
   int x, y;
   int color;
-  Board& board;
+  Board &board;
   int pid;
 };
-
 
 #endif /* _PIECE_H_ */

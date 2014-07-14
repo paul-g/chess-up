@@ -27,7 +27,6 @@ int CApp::OnExecute() {
     while (SDL_PollEvent(&event)) {
       OnEvent(event);
     }
-    OnLoop();
     OnRender();
     SDL_Delay(200);
   }
@@ -46,8 +45,8 @@ bool CApp::OnInit() {
   }
 
   win = SDL_CreateWindow("Hello World!",
-			 100, 100, 880, 640,
-			 SDL_WINDOW_SHOWN);
+                         100, 100, 880, 640,
+                         SDL_WINDOW_SHOWN);
   if (win == nullptr){
     cout << "SDL_CreateWindow Error: " << SDL_GetError() << endl;
     SDL_Quit();
@@ -57,13 +56,13 @@ bool CApp::OnInit() {
   //Initialize PNG loading
   int imgFlags = IMG_INIT_PNG;
   if( !( IMG_Init( imgFlags ) & imgFlags ) ) {
-      printf( "SDL_image could not initialize! SDL_image Error: %s\n",
-	      IMG_GetError() );
+    printf( "SDL_image could not initialize! SDL_image Error: %s\n",
+            IMG_GetError() );
   }
 
   surface = SDL_GetWindowSurface(win);
   SDL_FillRect(surface, NULL,
-	       SDL_MapRGB(surface->format, 125, 125, 125));
+               SDL_MapRGB(surface->format, 125, 125, 125));
   board = new Board(surface);
   board->draw();
   SDL_UpdateWindowSurface(win);
@@ -79,7 +78,6 @@ void CApp::OnEvent(SDL_Event& e) {
   }
 
   // handle mouse events
-
   if (e.type == SDL_MOUSEBUTTONDOWN) {
     int x, y;
     SDL_GetMouseState(&x, &y);
@@ -87,25 +85,28 @@ void CApp::OnEvent(SDL_Event& e) {
       toX = x;
       toY = y;
       selected = false;
-      if (board->movePiece(fromX, fromY, toX, toY)) {
-	// if move was valid update state
-	bool check = board->opponentInCheck();
-	board->updateToMove();
-	if (check) {
-	  cout << "Check!" << endl;
-	}
-      }
+      GameLoop();
     } else {
       if (board->select(x, y)) {
-	fromX = x;
-	fromY = y;
-	selected = true;
+        fromX = x;
+        fromY = y;
+        selected = true;
       }
     }
   }
 }
 
-void CApp::OnLoop() {}
+// The abstract chess game loop
+void CApp::GameLoop() {
+  if (board->movePiece(fromX, fromY, toX, toY)) {
+    // if move was valid update state
+    bool check = board->opponentInCheck();
+    board->updateToMove();
+    if (check) {
+      cout << "Check!" << endl;
+    }
+  }
+}
 
 void CApp::OnRender() {
   board->draw();

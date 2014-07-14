@@ -25,7 +25,7 @@ private:
 
   void OnEvent(SDL_Event&);
 
-  void OnLoop();
+  void GameLoop();
 
   void OnRender();
 

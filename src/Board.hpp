@@ -32,6 +32,7 @@ public:
   int colorAt(int bx, int by);
 
   bool opponentInCheck();
+  bool currentPlayerInCheck();
 
   void updateToMove();
 
@@ -43,6 +44,7 @@ private:
   bool validateMove(int fx, int fy, int tx, int ty);
   void initBoard();
   void capture(Piece* p);
+  bool inCheck(int color);
 
   // rendering functions
   void drawSquare(int i, int j);

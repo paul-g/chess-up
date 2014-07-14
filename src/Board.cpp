@@ -11,8 +11,7 @@
 
 using namespace std;
 
-Board::Board(SDL_Surface* _surface) :
-  surface(_surface), init(true) {
+Board::Board(SDL_Surface *_surface) : surface(_surface), init(true) {
   toMove = WHITE;
   initBoard();
 }
@@ -66,8 +65,7 @@ bool Board::draw() {
                        SDL_MapRGB(surface->format, 255, 255, 0));
 
         if (valid[i][j] == VALID) {
-          SDL_FillRect(surface, &rect,
-                       SDL_MapRGB(surface->format, 0, 255, 0));
+          SDL_FillRect(surface, &rect, SDL_MapRGB(surface->format, 0, 255, 0));
         }
       }
 
@@ -107,7 +105,7 @@ bool Board::select(int dx, int dy) {
 }
 
 // move piece from -> to coordinates (display coordinates)
-bool Board::movePiece(int fromX, int fromY, int  toX, int toY) {
+bool Board::movePiece(int fromX, int fromY, int toX, int toY) {
   int fx = toBoardX(fromX);
   int fy = toBoardY(fromY);
   int tx = toBoardX(toX);
@@ -115,7 +113,7 @@ bool Board::movePiece(int fromX, int fromY, int  toX, int toY) {
 
   if (!validateMove(fx, fy, tx, ty)) {
     cout << "Invalid move (" << fx << " " << fy;
-    cout << ") --> ("  << tx << " " << ty << ")" << endl;
+    cout << ") --> (" << tx << " " << ty << ")" << endl;
     clearValid();
     return false;
   }
@@ -153,20 +151,19 @@ void Board::updateValid(int bx, int by) {
   changed[bx][by] = true;
 
   // TODO mark valid movement squares
-  Piece* p = board[bx][by];
+  Piece *p = board[bx][by];
   auto moves = p->validMoves();
-  for  (auto m : moves) {
+  for (auto m : moves) {
     cout << "Moves" << endl;
     int x = m.first;
     int y = m.second;
     valid[x][y] = VALID;
     changed[x][y] = true;
   }
-
 }
 
 bool Board::validateSelection(int bx, int by) {
-  Piece* p = board[bx][by];
+  Piece *p = board[bx][by];
   if (!p)
     return false;
   return p->getColor() == toMove;
@@ -224,13 +221,12 @@ void Board::initBoard() {
   board[3][0] = new King(*this, WHITE, 3, 0);
   board[3][7] = new King(*this, BLACK, 3, 7);
 
-
   // init fonts
   if (TTF_Init() == -1) {
     printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
   }
 
-  font = TTF_OpenFont( "fonts/FreeSerif.ttf", 20);
+  font = TTF_OpenFont("fonts/FreeSerif.ttf", 20);
   if (font == NULL) {
     cerr << "TTF_OpenFont() Failed: " << TTF_GetError() << endl;
     TTF_Quit();
@@ -238,13 +234,11 @@ void Board::initBoard() {
     exit(1);
   }
 
-  text_color = {255, 255, 255};
+  text_color = { 255, 255, 255 };
 }
 
 int Board::colorAt(int bx, int by) {
-  if (bx < 0 || bx > 7 ||
-      by < 0 || by > 7 ||
-      !board[bx][by])
+  if (bx < 0 || bx > 7 || by < 0 || by > 7 || !board[bx][by])
     return NONE;
 
   return board[bx][by]->getColor();
@@ -257,15 +251,14 @@ void Board::drawSquare(int i, int j) {
   rect.w = 80;
   rect.h = 80;
   int c = (i + j) % 2 == 0 ? 210 : 125;
-  SDL_FillRect(surface, &rect,
-	       SDL_MapRGB(surface->format, c, c, c));
+  SDL_FillRect(surface, &rect, SDL_MapRGB(surface->format, c, c, c));
 }
 
-void Board::capture(Piece* p) {
+void Board::capture(Piece *p) {
   captured.push_back(p);
   int c = p->getColor();
   int pid = p->getId();
-  pair<Piece*, int> pp = capturedCount[c][pid];
+  pair<Piece *, int> pp = capturedCount[c][pid];
   capturedCount[c][pid] = make_pair(p, pp.second + 1);
 }
 
@@ -276,7 +269,7 @@ void Board::drawCaptured() {
     for (int pId = 0; pId < MAX_PID; pId++) {
       int count = capturedCount[i][pId].second;
       if (count == 0)
-	continue;
+        continue;
       stringstream ss;
       ss << "x ";
       ss << count;
@@ -291,39 +284,35 @@ void Board::drawCaptured() {
       rect.w = 40;
       rect.h = 20;
 
-      SDL_Surface* text = TTF_RenderText_Solid(font,
-                                               ss.str().c_str(),
-                                               text_color);
-      SDL_FillRect(surface, &rect,
-                   SDL_MapRGB(surface->format, 125, 125, 125));
+      SDL_Surface *text =
+          TTF_RenderText_Solid(font, ss.str().c_str(), text_color);
+      SDL_FillRect(surface, &rect, SDL_MapRGB(surface->format, 125, 125, 125));
 
       SDL_BlitSurface(text, NULL, surface, &rect);
-
     }
   }
 }
 
-bool Board::opponentInCheck() {
+bool Board::currentPlayerInCheck() { return inCheck(toMove); }
 
+bool Board::opponentInCheck() { return inCheck(1 - toMove); }
+
+bool Board::inCheck(int color) {
   for (int i = 0; i < 8; i++)
     for (int j = 0; j < 8; j++) {
       if (!board[i][j])
-	continue;
+        continue;
       auto moves = board[i][j]->validMoves();
       for (auto p : moves) {
-	Piece *piece = board[p.first][p.second];
-	if (!piece)
-	  continue;
-	if (piece->getColor() != toMove &&
-	    piece->getId() == KING_ID) {
-	  return true;
-	}
+        Piece *piece = board[p.first][p.second];
+        if (!piece)
+          continue;
+        if (piece->getColor() == color && piece->getId() == KING_ID) {
+          return true;
+        }
       }
-  }
-
+    }
   return false;
 }
 
-void Board::updateToMove() {
-  toMove = (toMove == WHITE) ? BLACK : WHITE;
-}
+void Board::updateToMove() { toMove = (toMove == WHITE) ? BLACK : WHITE; }

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <SDL2/SDL_image.h>
 
+using namespace std;
+
 CApp::CApp() {
   running = true;
   selected = false;
@@ -39,7 +41,7 @@ int CApp::OnExecute() {
 bool CApp::OnInit() {
 
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-    std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
+    cout << "SDL_Init Error: " << SDL_GetError() << endl;
     return false;
   }
 
@@ -47,7 +49,7 @@ bool CApp::OnInit() {
 			 100, 100, 880, 640,
 			 SDL_WINDOW_SHOWN);
   if (win == nullptr){
-    std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+    cout << "SDL_CreateWindow Error: " << SDL_GetError() << endl;
     SDL_Quit();
     return false;
   }
@@ -85,7 +87,14 @@ void CApp::OnEvent(SDL_Event& e) {
       toX = x;
       toY = y;
       selected = false;
-      board->movePiece(fromX, fromY, toX, toY);
+      if (board->movePiece(fromX, fromY, toX, toY)) {
+	// if move was valid update state
+	bool check = board->opponentInCheck();
+	board->updateToMove();
+	if (check) {
+	  cout << "Check!" << endl;
+	}
+      }
     } else {
       if (board->select(x, y)) {
 	fromX = x;

@@ -27,9 +27,13 @@ public:
   bool select(int dx, int dy);
 
   // move piece from -> to coordinates (display coordinates)
-  void movePiece(int fromX, int fromY, int  toX, int toY);
+  bool movePiece(int fromX, int fromY, int  toX, int toY);
 
   int colorAt(int bx, int by);
+
+  bool opponentInCheck();
+
+  void updateToMove();
 
 private:
   void clearValid();

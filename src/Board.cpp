@@ -107,7 +107,7 @@ bool Board::select(int dx, int dy) {
 }
 
 // move piece from -> to coordinates (display coordinates)
-void Board::movePiece(int fromX, int fromY, int  toX, int toY) {
+bool Board::movePiece(int fromX, int fromY, int  toX, int toY) {
   int fx = toBoardX(fromX);
   int fy = toBoardY(fromY);
   int tx = toBoardX(toX);
@@ -117,7 +117,7 @@ void Board::movePiece(int fromX, int fromY, int  toX, int toY) {
     cout << "Invalid move (" << fx << " " << fy;
     cout << ") --> ("  << tx << " " << ty << ")" << endl;
     clearValid();
-    return;
+    return false;
   }
 
   Piece *p = board[fx][fy];
@@ -132,7 +132,7 @@ void Board::movePiece(int fromX, int fromY, int  toX, int toY) {
 
   clearValid();
 
-  toMove = (toMove == WHITE) ? BLACK : WHITE;
+  return true;
 }
 
 void Board::clearValid() {
@@ -179,6 +179,7 @@ void Board::printMove(int fx, int fy, int tx, int ty) {
 }
 
 bool Board::validateMove(int fx, int fy, int tx, int ty) {
+  // TODO: ensure the move doesn't leave the current player in check
   return valid[tx][ty] == VALID;
 }
 
@@ -300,4 +301,29 @@ void Board::drawCaptured() {
 
     }
   }
+}
+
+bool Board::opponentInCheck() {
+
+  for (int i = 0; i < 8; i++)
+    for (int j = 0; j < 8; j++) {
+      if (!board[i][j])
+	continue;
+      auto moves = board[i][j]->validMoves();
+      for (auto p : moves) {
+	Piece *piece = board[p.first][p.second];
+	if (!piece)
+	  continue;
+	if (piece->getColor() != toMove &&
+	    piece->getId() == KING_ID) {
+	  return true;
+	}
+      }
+  }
+
+  return false;
+}
+
+void Board::updateToMove() {
+  toMove = (toMove == WHITE) ? BLACK : WHITE;
 }

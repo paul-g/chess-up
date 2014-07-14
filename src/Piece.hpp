@@ -31,6 +31,8 @@ public:
     this->surface = color == BLACK ? loadPiece(blackImg) : loadPiece(whiteImg);
   }
 
+  std::vector<std::pair<int, int> > allValidMoves();
+
   virtual std::vector<std::pair<int, int> > validMoves() = 0;
 
   virtual ~Piece() {}

@@ -152,7 +152,7 @@ void Board::updateValid(int bx, int by) {
 
   // TODO mark valid movement squares
   Piece *p = board[bx][by];
-  auto moves = p->validMoves();
+  auto moves = p->allValidMoves();
   for (auto m : moves) {
     cout << "Moves" << endl;
     int x = m.first;
@@ -302,7 +302,7 @@ bool Board::inCheck(int color) {
     for (int j = 0; j < 8; j++) {
       if (!board[i][j])
         continue;
-      auto moves = board[i][j]->validMoves();
+      auto moves = board[i][j]->allValidMoves();
       for (auto p : moves) {
         Piece *piece = board[p.first][p.second];
         if (!piece)

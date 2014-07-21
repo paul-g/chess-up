@@ -43,15 +43,16 @@ public:
   virtual MovesList possibleMoves() = 0;
 
   /** Returns a list of valid moves for this piece.
-      A move is 'valid' if and only if:
-      1. It is a possible move
-      2. It doesn't leave the current player in check
+      A move is 'valid' if and only if it:
+      1. is a possible move
+      2. doesn't leave the current player in check
   */
   std::vector<std::pair<int, int> > validMoves();
 
   /** Return a list of fields attacked by this piece. */
-  virtual std::vector<std::pair<int, int> > attackedFields() {}
-
+  virtual std::vector<std::pair<int, int> > attackedFields() {
+    return possibleMoves();
+  }
 
   virtual ~Piece() {}
 

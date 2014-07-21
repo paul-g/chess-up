@@ -15,6 +15,8 @@ public:
   ~Pawn() { SDL_FreeSurface(surface); }
 
   std::vector<std::pair<int, int> > possibleMoves();
+
+  MovesList attackedFields();
 };
 
 #endif /* _PAWN_H_ */

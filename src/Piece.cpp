@@ -59,7 +59,7 @@ int Piece::canMove(int tox, int toy) {
   return (toColor == NONE) ? 2 : 1;
 }
 
-std::vector<std::pair<int, int> > Piece::allValidMoves() {
+std::vector<std::pair<int, int> > Piece::validMoves() {
   // TODO implement additional checks
-  return validMoves();
+  return possibleMoves();
 }

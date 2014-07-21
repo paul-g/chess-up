@@ -4,7 +4,7 @@
 
 using namespace std;
 
-std::vector<std::pair<int, int> > Knight::validMoves() {
+std::vector<std::pair<int, int> > Knight::possibleMoves() {
   std::vector<std::pair<int, int> > pos;
 
   for (int i = -1; i <= 1; i++)

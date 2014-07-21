@@ -12,7 +12,7 @@ public:
 
   ~Queen() { SDL_FreeSurface(surface); }
 
-  std::vector<std::pair<int, int> > validMoves();
+  std::vector<std::pair<int, int> > possibleMoves();
 };
 
 #endif /* _QUEEN_H_ */

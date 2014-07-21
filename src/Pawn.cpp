@@ -2,7 +2,7 @@
 
 #include "Board.hpp"
 
-std::vector<std::pair<int, int> > Pawn::validMoves() {
+std::vector<std::pair<int, int> > Pawn::possibleMoves() {
   std::vector<std::pair<int, int> > pos;
 
   // TODO account for possible switch in start position

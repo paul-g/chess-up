@@ -22,6 +22,8 @@ const int ROOK_ID = 3;
 const int QUEEN_ID = 4;
 const int KING_ID = 5;
 
+typedef std::vector<std::pair<int, int> > MovesList;
+
 class Piece {
 
 public:
@@ -31,9 +33,25 @@ public:
     this->surface = color == BLACK ? loadPiece(blackImg) : loadPiece(whiteImg);
   }
 
-  std::vector<std::pair<int, int> > allValidMoves();
+  /** Returns a list of possible moves for this piece.
+      A move is 'possible' if and only if it:
+      1. corresponds to the movement pattern of the piece
+      2. is within the bounds of the board
+      3. it is not blocked by the placement of other pieces
+      Additional validity checks should be performed in validMoves().
+  */
+  virtual MovesList possibleMoves() = 0;
 
-  virtual std::vector<std::pair<int, int> > validMoves() = 0;
+  /** Returns a list of valid moves for this piece.
+      A move is 'valid' if and only if:
+      1. It is a possible move
+      2. It doesn't leave the current player in check
+  */
+  std::vector<std::pair<int, int> > validMoves();
+
+  /** Return a list of fields attacked by this piece. */
+  virtual std::vector<std::pair<int, int> > attackedFields() {}
+
 
   virtual ~Piece() {}
 

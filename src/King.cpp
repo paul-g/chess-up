@@ -4,7 +4,7 @@
 
 using namespace std;
 
-std::vector<std::pair<int, int> > King::validMoves() {
+std::vector<std::pair<int, int> > King::possibleMoves() {
   std::vector<std::pair<int, int> > pos;
   for (int i = -1; i <= 1; i++)
     for (int j = -1; j <= 1; j++)

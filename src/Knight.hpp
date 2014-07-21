@@ -12,7 +12,7 @@ public:
 
   ~Knight() { SDL_FreeSurface(surface); }
 
-  std::vector<std::pair<int, int> > validMoves();
+  std::vector<std::pair<int, int> > possibleMoves();
 };
 
 #endif /* _KNIGHT_H_ */

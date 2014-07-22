@@ -10,9 +10,11 @@ MovesList Pawn::possibleMoves() {
   // TODO account for possible switch in start position
   int mod = color == WHITE ? 1 : -1;
 
-  if (y == (7 + mod) % 7)
+  if (y == (7 + mod) % 7 &&
+      board.colorAt(x, y + 2 * mod) == NONE)
     pos.push_back(make_pair(x, y + mod * 2));
-  pos.push_back(make_pair(x, y + mod));
+  if (board.colorAt(x, y + mod) == NONE)
+    pos.push_back(make_pair(x, y + mod));
 
   int toColor = board.colorAt(x + mod, y + mod);
   if (toColor != NONE && color != toColor)

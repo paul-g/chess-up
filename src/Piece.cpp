@@ -19,14 +19,14 @@ void Piece::setTransparent(SDL_Surface *surface) {
   SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0, 255, 0));
 }
 
-SDL_Surface *Piece::loadPiece(std::string path) {
+SDL_Surface *Piece::loadPiece(string path) {
   SDL_Surface *s = IMG_Load(path.c_str());
   setTransparent(s);
   return s;
 }
 
 void Piece::checkDirection(int modx, int mody,
-                           std::vector<std::pair<int, int> > *v, int maxDepth) {
+                           MovesList *v, int maxDepth) {
   for (int i = 1; i < maxDepth; i++) {
 
     int tox = x + modx * i;
@@ -37,7 +37,7 @@ void Piece::checkDirection(int modx, int mody,
     if (cm == 0)
       break;
 
-    v->push_back(std::make_pair(tox, toy));
+    v->push_back(make_pair(tox, toy));
     cout << "Adding pair " << tox << " " << toy << endl;
     if (cm == 1) {
       cout << "Different color, stopping" << endl;

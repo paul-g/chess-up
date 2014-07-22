@@ -4,8 +4,8 @@
 
 using namespace std;
 
-std::vector<std::pair<int, int> > Knight::possibleMoves() {
-  std::vector<std::pair<int, int> > pos;
+MovesList Knight::possibleMoves() {
+  MovesList pos;
 
   for (int i = -1; i <= 1; i++)
     for (int j = -1; j <= 1; j++) {
@@ -21,6 +21,5 @@ std::vector<std::pair<int, int> > Knight::possibleMoves() {
         pos.push_back(make_pair(tox, toy));
     }
 
-  cout << pos.size() << endl;
   return pos;
 }

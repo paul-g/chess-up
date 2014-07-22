@@ -12,7 +12,7 @@ public:
 
   ~Rook() { SDL_FreeSurface(surface); }
 
-  std::vector<std::pair<int, int> > possibleMoves();
+  MovesList possibleMoves();
 };
 
 #endif /* _ROOK_H_ */

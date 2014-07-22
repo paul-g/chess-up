@@ -3,7 +3,6 @@
 
 #include "Piece.hpp"
 #include <SDL2/SDL.h>
-#include <vector>
 
 class Pawn : public Piece {
 
@@ -14,7 +13,7 @@ public:
 
   ~Pawn() { SDL_FreeSurface(surface); }
 
-  std::vector<std::pair<int, int> > possibleMoves();
+  MovesList possibleMoves();
 
   MovesList attackedFields();
 };

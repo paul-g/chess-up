@@ -47,10 +47,10 @@ public:
       1. is a possible move
       2. doesn't leave the current player in check
   */
-  std::vector<std::pair<int, int> > validMoves();
+  MovesList validMoves();
 
   /** Return a list of fields attacked by this piece. */
-  virtual std::vector<std::pair<int, int> > attackedFields() {
+  virtual MovesList attackedFields() {
     return possibleMoves();
   }
 
@@ -74,7 +74,7 @@ protected:
 
   void setTransparent(SDL_Surface *surface);
   SDL_Surface *loadPiece(std::string path);
-  void checkDirection(int modx, int mody, std::vector<std::pair<int, int> > *v,
+  void checkDirection(int modx, int mody, MovesList *v,
                       int maxDepth = 8);
   int canMove(int tox, int toy);
 

@@ -2,14 +2,11 @@
 
 #include "Board.hpp"
 
-using namespace std;
-
-std::vector<std::pair<int, int> > Rook::possibleMoves() {
-  std::vector<std::pair<int, int> > pos;
+MovesList Rook::possibleMoves() {
+  MovesList pos;
   checkDirection(1, 0, &pos);
   checkDirection(-1, 0, &pos);
   checkDirection(0, -1, &pos);
   checkDirection(0, 1, &pos);
-  cout << pos.size() << endl;
   return pos;
 }

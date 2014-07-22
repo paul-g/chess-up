@@ -38,7 +38,6 @@ void Piece::checkDirection(int modx, int mody,
       break;
 
     v->push_back(make_pair(tox, toy));
-    cout << "Adding pair " << tox << " " << toy << endl;
     if (cm == 1) {
       cout << "Different color, stopping" << endl;
       break;

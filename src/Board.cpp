@@ -133,6 +133,14 @@ bool Board::movePiece(int fromX, int fromY, int toX, int toY) {
   return true;
 }
 
+// move piece from -> to coordinates (board coordinates)
+bool Board::doMove(int fx, int fy , int tx, int ty) {
+  Piece *p = board[fx][fy];
+  board[tx][ty] = p;
+  board[fx][fy] = nullptr;
+  return true;
+}
+
 void Board::clearValid() {
   for (int i = 0; i < 8; i++)
     for (int j = 0; j < 8; j++) {
@@ -302,8 +310,11 @@ bool Board::inCheck(int color) {
     for (int j = 0; j < 8; j++) {
       if (!board[i][j])
         continue;
-      auto moves = board[i][j]->validMoves();
+      auto moves = board[i][j]->attackedFields();
       for (auto p : moves) {
+	if (p.first < 0 || p.first > 7 ||
+	    p.second < 0 || p.second > 7)
+	  continue;
         Piece *piece = board[p.first][p.second];
         if (!piece)
           continue;

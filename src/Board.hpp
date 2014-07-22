@@ -35,9 +35,18 @@ public:
   bool currentPlayerInCheck();
 
   void updateToMove();
+  void clearValid();
+  bool doMove(int fx, int fy , int tx, int ty);
+
+  inline Piece* get(int x, int y) const {
+    return board[x][y];
+  }
+
+  inline void set(int x, int y, Piece *p) {
+    board[x][y] = p;
+  }
 
 private:
-  void clearValid();
   void updateValid(int bx, int by);
   bool validateSelection(int bx, int by);
   void printMove(int fx, int fy, int tx, int ty);

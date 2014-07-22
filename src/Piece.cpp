@@ -59,7 +59,20 @@ int Piece::canMove(int tox, int toy) {
   return (toColor == NONE) ? 2 : 1;
 }
 
-std::vector<std::pair<int, int> > Piece::validMoves() {
-  // TODO implement additional checks
-  return possibleMoves();
+
+MovesList Piece::validMoves() {
+  MovesList mvs;
+  MovesList possible = possibleMoves();
+  for (auto m : possible)  {
+    // TODO implement additional checks
+    int tox = m.first;
+    int toy = m.second;
+    Piece *p = board.get(tox, toy);
+    board.doMove(x, y, tox, toy);
+    if (!board.currentPlayerInCheck())
+      mvs.push_back(m);
+    board.doMove(tox, toy, x, y);
+    board.set(tox, toy, p);
+  }
+  return mvs;
 }

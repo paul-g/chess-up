@@ -93,6 +93,7 @@ void CApp::OnEvent(SDL_Event &e) {
 // The abstract chess game loop
 void CApp::GameLoop() {
   if (board->movePiece(fromX, fromY, toX, toY)) {
+    board->clearValid();
     // if move was valid update state
     bool check = board->opponentInCheck();
     board->updateToMove();
@@ -100,6 +101,7 @@ void CApp::GameLoop() {
       cout << "Check!" << endl;
     }
   }
+  board->clearValid();
 }
 
 void CApp::OnRender() {

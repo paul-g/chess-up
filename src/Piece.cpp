@@ -39,7 +39,6 @@ void Piece::checkDirection(int modx, int mody,
 
     v->push_back(make_pair(tox, toy));
     if (cm == 1) {
-      cout << "Different color, stopping" << endl;
       break;
     }
   }
@@ -63,7 +62,6 @@ MovesList Piece::validMoves() {
   MovesList mvs;
   MovesList possible = possibleMoves();
   for (auto m : possible)  {
-    // TODO implement additional checks
     int tox = m.first;
     int toy = m.second;
     Piece *p = board.get(tox, toy);

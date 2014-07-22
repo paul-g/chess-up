@@ -158,11 +158,9 @@ void Board::updateValid(int bx, int by) {
   valid[bx][by] = SOURCE;
   changed[bx][by] = true;
 
-  // TODO mark valid movement squares
   Piece *p = board[bx][by];
   auto moves = p->validMoves();
   for (auto m : moves) {
-    cout << "Moves" << endl;
     int x = m.first;
     int y = m.second;
     valid[x][y] = VALID;
@@ -180,11 +178,9 @@ bool Board::validateSelection(int bx, int by) {
 void Board::printMove(int fx, int fy, int tx, int ty) {
   cout << "Moving piece from " << fx << " " << fy;
   cout << " to " << tx << " " << ty << endl;
-  cout << board[fx][fy] << endl;
 }
 
 bool Board::validateMove(int fx, int fy, int tx, int ty) {
-  // TODO: ensure the move doesn't leave the current player in check
   return valid[tx][ty] == VALID;
 }
 

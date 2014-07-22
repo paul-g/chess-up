@@ -8,9 +8,7 @@
 #include "Piece.hpp"
 #include "Pawn.hpp"
 
-// TODO make pieces an enum
 const int EMPTY = 0;
-const int PAWN = 1;
 
 const int INVALID = 0;
 const int SOURCE = 1;

@@ -10,7 +10,5 @@ MovesList Bishop::possibleMoves() {
   checkDirection(-1, 1, &pos);
   checkDirection(1, -1, &pos);
   checkDirection(-1, -1, &pos);
-  cout << pos.size() << endl;
-
   return pos;
 }

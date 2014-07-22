@@ -74,8 +74,13 @@ protected:
 
   void setTransparent(SDL_Surface *surface);
   SDL_Surface *loadPiece(std::string path);
+
+  /** Checks if the piece can move in the direction given by modx and
+   mody, up to a distance of maxDepth and adds all valid moves to v.
+  */
   void checkDirection(int modx, int mody, MovesList *v,
                       int maxDepth = 8);
+
   int canMove(int tox, int toy);
 
   SDL_Surface *surface;

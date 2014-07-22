@@ -46,6 +46,8 @@ public:
     board[x][y] = p;
   }
 
+  bool checkMate();
+
 private:
   void updateValid(int bx, int by);
   bool validateSelection(int bx, int by);

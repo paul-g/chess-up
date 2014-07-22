@@ -327,3 +327,15 @@ bool Board::inCheck(int color) {
 }
 
 void Board::updateToMove() { toMove = (toMove == WHITE) ? BLACK : WHITE; }
+
+bool Board::checkMate() {
+  for (int i = 0; i < 8; i++)
+    for (int j = 0; j < 8; j++) {
+      Piece *p = board[i][j];
+      if (!p || p->getColor() != toMove)
+	continue;
+      if (p->validMoves().size() > 0)
+	return true;
+    }
+  return false;
+}

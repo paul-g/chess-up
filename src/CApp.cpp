@@ -100,6 +100,7 @@ void CApp::GameLoop() {
     if (check) {
       cout << "Check!" << endl;
     }
+    running = board->checkMate();
   }
   board->clearValid();
 }

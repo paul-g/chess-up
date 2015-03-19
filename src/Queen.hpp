@@ -2,13 +2,15 @@
 #define _QUEEN_H_
 
 #include "Piece.hpp"
+#include "resource.hpp"
 
 class Queen : public Piece {
 
 public:
   Queen(Board &_board, int color, int x, int y)
-      : Piece(_board, QUEEN_ID, color, x, y, "black_queen.png",
-              "white_queen.png") {}
+      : Piece(_board, QUEEN_ID, color, x, y, 
+		      resource::bqueen(),
+		      resource::wqueen()) {}
 
   ~Queen() { SDL_FreeSurface(surface); }
 

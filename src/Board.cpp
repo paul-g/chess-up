@@ -8,6 +8,7 @@
 #include "Queen.hpp"
 #include "Knight.hpp"
 #include "King.hpp"
+#include "resource.hpp"
 
 using namespace std;
 
@@ -230,7 +231,7 @@ void Board::initBoard() {
     printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
   }
 
-  font = TTF_OpenFont("fonts/FreeSerif.ttf", 20);
+  font = TTF_OpenFont(resource::freeSerif().c_str(), 20);
   if (font == NULL) {
     cerr << "TTF_OpenFont() Failed: " << TTF_GetError() << endl;
     TTF_Quit();

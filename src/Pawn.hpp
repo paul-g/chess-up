@@ -3,13 +3,15 @@
 
 #include "Piece.hpp"
 #include <SDL2/SDL.h>
+#include "resource.hpp"
 
 class Pawn : public Piece {
 
 public:
   Pawn(Board &_board, int color, int x, int y)
-      : Piece(_board, PAWN_ID, color, x, y, "black_pawn.png",
-              "white_pawn.png") {}
+      : Piece(_board, PAWN_ID, color, x, y, 
+		resource::bpawn(), 
+		resource::wpawn()){}
 
   ~Pawn() { SDL_FreeSurface(surface); }
 

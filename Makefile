@@ -12,6 +12,7 @@ update-doc: doc
 	git commit -m "Update documentation"
 	git push -u origin gh-pages
 	rm -rf ${TMP_PATH}
+	git checkout master
 
 doc:
 	doxygen docs/doxygen.conf

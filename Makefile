@@ -6,7 +6,8 @@ update-doc: doc
 	git checkout gh-pages
 	cp ${TMP_PATH}/* . -R
 	rm -rf latex
-	git commit -am "Update documentation"
+	git add .
+	git commit -m "Update documentation"
 	git push -u origin gh-pages
 	rm -rf ${TMP_PATH}
 

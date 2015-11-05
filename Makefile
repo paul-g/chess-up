@@ -3,7 +3,7 @@ HTML_DIR="html"
 TRASH=latex
 
 update-doc: doc
-	cp ${HTML_DIR} ${TMP_PATH} -R
+	cp ${HTML_DIR} ${TMP_PATH} -R && rm -rf ${HTML_DIR}
 	git fetch
 	git checkout gh-pages
 	cp ${TMP_PATH}/* . -R

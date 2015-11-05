@@ -4,7 +4,8 @@ update-doc: doc
 	cp html ${TMP_PATH} -R
 	git fetch
 	git checkout gh-pages
-	cp ${TMP_PATH} . -R
+	cp ${TMP_PATH}/* . -R
+	rm -rf latex
 	git commit -am "Update documentation"
 	git push -u origin gh-pages
 	rm -rf ${TMP_PATH}
